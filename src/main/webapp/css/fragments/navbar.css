@@ -1,0 +1,38 @@
+/* Style the top navigation bar */
+.topNav {
+    overflow: hidden;
+    background-color: var(--dark-grey);
+    margin: 0;
+    padding: 0;
+    -webkit-box-shadow: 0px 1px 16px 2px rgba(0,0,0,0.8);
+    -moz-box-shadow: 0px 1px 16px 2px rgba(0,0,0,0.8);
+    box-shadow: 0px 1px 16px 2px rgba(0,0,0,0.8);
+}
+
+/* Style the topNav links */
+.topNav a {
+    float: left;
+    display: block;
+    color: var(--dark-white);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: large;
+}
+
+/* Change color on hover */
+.topNav a:hover {
+    background-color: #ddd;
+    color: var(--black);
+}
+
+@media screen and (max-width: 600px) {
+    .topNav a {
+        float: none;
+        width: 100%;
+    }
+}
+
+.active {
+    background-color: var(--green);
+}

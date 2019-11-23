@@ -1,0 +1,46 @@
+<div th:fragment="navBar">
+    <div class="topNav">
+        <!-- Items on the left -->
+
+            <!-- This items are render every time -->
+            <div>
+                <a href="/" style="font-weight:bold" th:text="#{home}" th:classappend="${#request.getRequestURI() == '/' ? 'active':''}"></a>
+                <a href="/information" th:text="#{information}" th:classappend="${#request.getRequestURI() == '/information' ? 'active':''}"></a>
+                <a href="/news" th:text="#{news}"th:classappend="${#request.getRequestURI() == '/news' ? 'active':''}"></a>
+            </div>
+            <!-- ./This items are render every time -->
+
+            <!-- This items are render only for all authenticated users -->
+            <div sec:authorize="isAuthenticated()">
+                <a href="/bills"  th:text="#{bills}" th:classappend="${#request.getRequestURI() == '/bills' ? 'active':''}"></a>
+            </div>
+            <!-- ./This items are render only for authenticated users -->
+
+            <!-- This items are render only for user ADMIN -->
+            <div sec:authorize="hasRole('ADMIN')">
+                <a href="/admin" th:text="#{admin}" th:classappend="${#request.getRequestURI() == '/admin' ? 'active':''}"></a>
+            </div>
+            <!-- ./This items are render only for user ADMIN -->
+
+        <!-- ./Items on the left -->
+
+        <!-- Items on the right -->
+
+            <!-- This items are render only for NON authenticated users -->
+            <div sec:authorize="isAnonymous()">
+                <a href="/register" style="float:right" th:text="#{register}" th:classappend="${#request.getRequestURI() == '/register' ? 'active':''}"></a>
+                <a href="/login" style="float:right" th:text="#{login}" th:classappend="${#request.getRequestURI() == '/login' ? 'active':''}"></a>
+            </div>
+            <!-- ./This items are render only for NON authenticated users -->
+
+            <!-- This items are render only for authenticated users -->
+            <div sec:authorize="isAuthenticated()">
+                <a href="/logout" style="float:right" th:text="#{logout}"th:classappend="${#request.getRequestURI() == '/login' ? 'active':''}"></a>
+                <a href="/user" style="float:right" th:text="#{user}" th:classappend="${#request.getRequestURI() == '/register' ? 'active':''}"></a>
+            </div>
+            <!-- ./This items are render only for authenticated users -->
+
+        <!-- ./Items on the right -->
+
+    </div>
+</div>
