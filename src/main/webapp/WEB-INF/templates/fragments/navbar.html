@@ -28,7 +28,6 @@
 
             <!-- This items are render only for NON authenticated users -->
             <div sec:authorize="isAnonymous()">
-                <a href="/register" style="float:right" th:text="#{register}" th:classappend="${#request.getRequestURI() == '/register' ? 'active':''}"></a>
                 <a href="/login" style="float:right" th:text="#{login}" th:classappend="${#request.getRequestURI() == '/login' ? 'active':''}"></a>
             </div>
             <!-- ./This items are render only for NON authenticated users -->
