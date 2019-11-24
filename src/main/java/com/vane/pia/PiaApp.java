@@ -15,6 +15,7 @@ public class PiaApp {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PiaApp.class, args);
+		//SpringApplication.run(PiaApp.class, "--debug");
 	}
 
 }
