@@ -20,6 +20,8 @@
 	<!-- Content of the page -->
 	<h1 sec:authorize="hasRole('USER')" th:text="#{app.welcome} + ' ' + #{app.user}"></h1>
 	<h1 sec:authorize="hasRole('ADMIN')" th:text="#{app.welcome} + ' ' + #{app.admin}"></h1>
+	<h1 sec:authorize="hasRole('ACCOUNTANT')" th:text="#{app.welcome} + ' ' + #{app.accountant}"></h1>
+	<h1 sec:authorize="hasRole('SECRETARY')" th:text="#{app.welcome} + ' ' + #{app.secretary}"></h1>
 	<h1 sec:authorize="isAnonymous()" th:text="#{app.welcome} + ' ' + #{app.someone}"></h1>
 	<!-- Content of the page -->
 

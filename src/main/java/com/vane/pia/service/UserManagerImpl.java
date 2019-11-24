@@ -35,6 +35,14 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 	private static final String USER_NAME = "test";
 	private static final String USER_PASSWORD = "test";
 
+	// normal accountant
+	private static final String ACCOUNTANT_NAME = "acc";
+	private static final String ACCOUNTANT_PASSWORD = "acc";
+
+	// normal secretary
+	private static final String SECRETARY_NAME = "sec";
+	private static final String SECRETARY_PASSWORD = "sec";
+
 	private final PasswordEncoder encoder;
 
 	private final UserRepository userRepo;
@@ -74,7 +82,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 	@Transactional
 	public void setup() {
 		if (this.userRepo.count() == 0) {
-			log.info("No user present, creating admin.");
+			log.info("No admin present, creating admin.");
 			this.addUser(ADMIN_USER_NAME, ADMIN_PASSWORD);
 			User admin = this.userRepo.findByUsername(ADMIN_USER_NAME);
 			Role roleAdmin = this.roleRepo.findByCode("ADMIN");
@@ -87,6 +95,20 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 			Role roleUser = this.roleRepo.findByCode("USER");
 			user.getRoles().add(roleUser);
 			this.userRepo.save(user);
+
+			log.info("No accountant present, creating accountant.");
+			this.addUser(ACCOUNTANT_NAME, ACCOUNTANT_PASSWORD);
+			User accountant = this.userRepo.findByUsername(ACCOUNTANT_NAME);
+			Role roleAccountant = this.roleRepo.findByCode("ACCOUNTANT");
+			accountant.getRoles().add(roleAccountant);
+			this.userRepo.save(accountant);
+
+			log.info("No secretary present, creating secretary.");
+			this.addUser(SECRETARY_NAME, SECRETARY_PASSWORD);
+			User secretary = this.userRepo.findByUsername(SECRETARY_NAME);
+			Role roleSecretary = this.roleRepo.findByCode("SECRETARY");
+			secretary.getRoles().add(roleSecretary);
+			this.userRepo.save(secretary);
 		}
 	}
 

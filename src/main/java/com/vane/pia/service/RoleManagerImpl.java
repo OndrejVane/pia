@@ -1,9 +1,11 @@
 package com.vane.pia.service;
 
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
 import com.vane.pia.domain.Role;
+import com.vane.pia.model.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -30,14 +32,13 @@ public class RoleManagerImpl implements RoleManager {
 	@Order(1)
 	public void setup() {
 		if (this.roleRepo.count() == 0) {
-			log.info("No roles present, creating ADMIN and USER.");
-			this.addRole("ADMIN", "Admins");
-			this.addRole("USER", "Users");
+			log.info("No roles present, creating all roles defining in Roles enum");
+			EnumSet.allOf(Roles.class).forEach(this::addRole);
 		}
 	}
 
-	public void addRole(String code, String name) {
-		Role role = new Role(code, name);
+	public void addRole(Roles roles) {
+		Role role = new Role(roles.getCode(), roles.getName());
 		this.roleRepo.save(role);
 	}
 

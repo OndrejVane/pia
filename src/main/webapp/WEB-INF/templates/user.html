@@ -19,6 +19,12 @@
 
 <!-- Content of the page -->
 <h1 th:text="#{user}"></h1>
+<p>
+    Logged user: <span sec:authentication="name"></span>
+</p>
+<P>
+    Roles: <span sec:authentication="principal.authorities"></span>
+</P>
 <!-- ./Content of the page -->
 
 
