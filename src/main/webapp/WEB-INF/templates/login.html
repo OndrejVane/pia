@@ -19,9 +19,9 @@
 
 	<!-- Content of the page -->
 		<h1>Login</h1>
-		
+
 		<p th:if="${param.error}" class="error">Wrong user or password!</p>
-		
+
 		<form th:action="@{/login}" method="post">
 			<div>
 				<label for="username">Username: </label><input type="text" name="username" id="username" />
@@ -33,13 +33,11 @@
 				<input type="submit" value="Login" />
 			</div>
 		</form>
-
 	<!-- ./Content of the page -->
 
 	<!-- Footer imported -->
 	<div th:replace="fragments/footer :: footer"></div>
 	<!-- ./Footer imported -->
-
 
 	</body>
 </html>
