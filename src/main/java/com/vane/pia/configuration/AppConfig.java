@@ -1,5 +1,6 @@
 package com.vane.pia.configuration;
 
+import com.vane.pia.model.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -32,17 +34,21 @@ import java.util.Properties;
 @EnableWebMvc
 @EnableWebSecurity
 @EnableAutoConfiguration
+@EnableGlobalMethodSecurity(
+        prePostEnabled = true,
+        securedEnabled = true,
+        jsr250Enabled = true)
 public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
-	private UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
-	@Autowired
-	public void setUserDetailsService(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
+    @Autowired
+    public void setUserDetailsService(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
-    public SpringResourceTemplateResolver templateResolver(){
+    public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
         templateResolver.setApplicationContext(this.getApplicationContext());
         templateResolver.setPrefix("/WEB-INF/templates/");
@@ -55,7 +61,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
     }
 
     @Bean
-    public SpringTemplateEngine templateEngine(){
+    public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver());
         templateEngine.setEnableSpringELCompiler(true);
@@ -64,7 +70,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
     }
 
     @Bean
-    public ThymeleafViewResolver viewResolver(){
+    public ThymeleafViewResolver viewResolver() {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
         return viewResolver;
@@ -72,63 +78,67 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-    	return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-		.authorizeRequests()
-			.mvcMatchers("/").permitAll()
-			.mvcMatchers("/information").permitAll()
-			.mvcMatchers("/news").permitAll()
-			.mvcMatchers("/login").permitAll()
-			.mvcMatchers("/admin/**").hasRole("ADMIN")
-			.regexMatchers(HttpMethod.GET, "^/css/.*", "^/webfonts/.*").permitAll()
-			.anyRequest().authenticated()
-			.and()
-		.formLogin()
-			.loginPage("/login")
-			.permitAll()
-			.defaultSuccessUrl("/")
-			.and()
-		.logout()
-			.logoutRequestMatcher(new RegexRequestMatcher("/logout", "GET"))
-			.invalidateHttpSession(true)
-			.deleteCookies("JSESSIONID")
-			.permitAll();
-	}
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .mvcMatchers("/").permitAll()
+                .mvcMatchers("/information").permitAll()
+                .mvcMatchers("/news").permitAll()
+                .mvcMatchers("/login").permitAll()
+                .mvcMatchers("/admin/**").hasRole(Roles.ADMIN.getCode())
+                .regexMatchers(HttpMethod.GET, "^/css/.*").permitAll()
+                .regexMatchers(HttpMethod.GET, "^/img/.*").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/")
+                .and()
+                .logout()
+                .logoutRequestMatcher(new RegexRequestMatcher("/logout", "GET"))
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .permitAll();
+    }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth
-		.userDetailsService(this.userDetailsService)
-		.passwordEncoder(passwordEncoder());
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .userDetailsService(this.userDetailsService)
+                .passwordEncoder(passwordEncoder());
+    }
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry
-		.addResourceHandler("/css/**")
-		.addResourceLocations("/css/");
-	}
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/css/**")
+                .addResourceLocations("/css/");
+        registry
+                .addResourceHandler("/img/**")
+                .addResourceLocations("/img/");
+    }
 
-	@Bean
-	public JavaMailSender getJavaMailSender() {
-		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setHost("smtp.gmail.com");
-		mailSender.setPort(587);
+    @Bean
+    public JavaMailSender getJavaMailSender() {
+        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+        mailSender.setHost("smtp.gmail.com");
+        mailSender.setPort(587);
 
-		mailSender.setUsername("mail@gmail.com");
-		mailSender.setPassword("password");
+        mailSender.setUsername("pianotificator@gmail.com");
+        mailSender.setPassword("piapiapia");
 
-		Properties props = mailSender.getJavaMailProperties();
-		props.put("mail.transport.protocol", "smtp");
-		props.put("mail.smtp.auth", "true");
-		props.put("mail.smtp.starttls.enable", "true");
-		props.put("mail.debug", "false");
+        Properties props = mailSender.getJavaMailProperties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.debug", "false");
 
-		return mailSender;
-	}
+        return mailSender;
+    }
 
 }

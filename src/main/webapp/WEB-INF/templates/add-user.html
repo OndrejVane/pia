@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{login}"></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+
+    <!-- Scripts -->
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script src='https://www.google.com/recaptcha/api.js?hl=en'></script>
+
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
+
+<!-- Content of the page -->
+<div id="content-wrap">
+
+    <h1>Create new user</h1>
+    <form action="#" th:action="@{/admin/users/add}" th:object="${user}" method="post">
+        <div class="form-container">
+            <h3 th:text="#{form.title.personalInformation}"></h3>
+            <table>
+                <tr>
+                    <td th:text="#{form.degree} + ':'"></td>
+                    <td><input type="text" th:field="*{degree}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.firstName} + ':*'"></td>
+                    <td><input type="text" th:field="*{firstName}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"> Error First
+                        Name
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.lastName} + ':*'"></td>
+                    <td><input type="text" th:field="*{lastName}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error Last Name
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.mail} + ':*'"></td>
+                    <td><input type="text" th:field="*{email}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error Email</td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.phoneNumber} + ':'"></td>
+                    <td><input type="text" th:field="*{telephoneNumber}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('telephoneNumber')}" th:errors="*{telephoneNumber}">
+                        Error Telephone Number
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.personalNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{personalIdentificationNumber}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('personalIdentificationNumber')}"
+                        th:errors="*{personalIdentificationNumber}">Error PIDN
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <table>
+                <h3 th:text="#{form.title.address} + ':'">Address</h3>
+                <tr>
+                    <td th:text="#{form.street} + ':'"></td>
+                    <td><input type="text" th:field="*{street}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.city} + ':'"></td>
+                    <td><input type="text" th:field="*{city}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.houseNumber} + ':'"></td>
+                    <td><input type="number" th:field="*{houseNumber}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.zipCode} + ':'"></td>
+                    <td><input type="text" th:field="*{zipCode}"/></td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-container">
+            <table>
+                <h3 th:text="#{form.title.payInfo}"></h3>
+                <tr>
+                    <td th:text="#{form.accountNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{accountNumber}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}">Error
+                        Account Number
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.bankNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{bankNumber}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('bankNumber')}" th:errors="*{bankNumber}">Error Bank
+                        Number
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.cardNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{cardNumber}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}">Error Card
+                        Number
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <h3 th:text="#{form.title.roles}"></h3>
+            <ul>
+                <table>
+                    <tr th:each="role : ${selectRoles}">
+                        <td>
+                            <input type="checkbox" th:value="${role.id}">
+                            <label th:text="${role.name}"></label>
+                        </td>
+                    </tr>
+                </table>
+            </ul>
+        </div>
+        <div class="form-buttons">
+            <small>* information has to be filled</small><br>
+            <button type="submit" class="button">Add user</button>
+            <button type="reset" class="button">Clear form</button>
+        </div>
+    </form>
+</div>
+<!-- ./Content of the page -->
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+
+</body>
+</html>

@@ -9,6 +9,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/information.css}"/>
 
 </head>
 <body>
@@ -17,7 +18,22 @@
     <!-- ./Navigation bar imported -->
 
     <!-- Content of the page -->
-    <h1 th:text="#{information}"></h1>
+    <div id="content-wrap">
+        <section class="info-container">
+            <h3 th:text="#{information}">Information</h3>
+            <text th:text="#{information.information.content}"></text>
+        </section>
+        <section class="info-container">
+            <h3 th:text="#{information.termsAndConditions.title}"></h3>
+            <text th:text="#{information.termsAndConditions.content}"></text>
+        </section>
+        <section class="info-container">
+            <h3 th:text="#{information.contactUs.title}"></h3>
+            <label th:text="#{information.contactUs.nameTitle}"></label> Lorem Impsum<br>
+            <label th:text="#{information.contactUs.mailTitle}"></label><a href="mailto:pianotificator@gmail.com">pianotificator@gmail.com</a><br>
+            <label th:text="#{information.contactUs.telTitle}"></label><a href="tel:+420123456789">+420 123 456 789</a><br>
+        </section>
+    </div>
     <!-- Content of the page -->
 
     <!-- Footer imported -->

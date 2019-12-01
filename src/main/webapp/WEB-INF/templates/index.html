@@ -2,31 +2,42 @@
 
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<!-- Title -->
-	<title th:text="#{app.name} + #{title.delimiter} + #{app.welcome}"></title>
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{app.welcome}"></title>
 
-	<!-- Styles -->
-	<link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+	<link rel="stylesheet" type="text/css" th:href="@{/css/index.css}"/>
 
 </head>
-	<body>
-	<!-- Navigation bar imported -->
-	<div th:replace="fragments/navbar :: navBar"></div>
-	<!-- ./Navigation bar imported -->
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
 
-	<!-- Content of the page -->
-	<h1 sec:authorize="hasRole('USER')" th:text="#{app.welcome} + ' ' + #{app.user}"></h1>
-	<h1 sec:authorize="hasRole('ADMIN')" th:text="#{app.welcome} + ' ' + #{app.admin}"></h1>
-	<h1 sec:authorize="hasRole('ACCOUNTANT')" th:text="#{app.welcome} + ' ' + #{app.accountant}"></h1>
-	<h1 sec:authorize="hasRole('SECRETARY')" th:text="#{app.welcome} + ' ' + #{app.secretary}"></h1>
-	<h1 sec:authorize="isAnonymous()" th:text="#{app.welcome} + ' ' + #{app.someone}"></h1>
-	<!-- Content of the page -->
+<!-- Content of the page -->
+<div id="content-wrap">
+    <div class="align">
+        <h1>
+            <img th:src="@{/img/helo_icon.jpg}" alt="Hello" height="42" width="42">
+			<label th:text="#{app.welcome.message}"></label>
+            <img th:src="@{/img/helo_icon.jpg}" alt="Hello" height="42" width="42">
+        </h1>
+		<text th:text="#{app.welcome.about}"></text>
 
-	<!-- Footer imported -->
-	<div th:replace="fragments/footer :: footer"></div>
-	<!-- ./Footer imported -->
-	</body>
+		<form sec:authorize="isAnonymous()" th:action="@{/login}" method="get">
+			<button th:text="#{login}" type="submit" class="button"></button>
+		</form>
+    </div>
+</div>
+<!-- Content of the page -->
+
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+</body>
 </html>

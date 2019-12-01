@@ -11,14 +11,14 @@
             <!-- ./This items are render every time -->
 
             <!-- This items are render only for all authenticated users -->
-            <div sec:authorize="isAuthenticated()">
+            <div sec:authorize="hasRole('USER')">
                 <a href="/bills"  th:text="#{bills}" th:classappend="${#request.getRequestURI() == '/bills' ? 'active':''}"></a>
             </div>
             <!-- ./This items are render only for authenticated users -->
 
             <!-- This items are render only for user ADMIN -->
             <div sec:authorize="hasRole('ADMIN')">
-                <a href="/admin" th:text="#{admin}" th:classappend="${#request.getRequestURI() == '/admin' ? 'active':''}"></a>
+                <a href="/admin/users" th:text="#{app.users}" th:classappend="${#request.getRequestURI() == '/admin/users' ? 'active':''}"></a>
             </div>
             <!-- ./This items are render only for user ADMIN -->
 

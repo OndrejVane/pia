@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title th:text="#{app.title} + #{title.delimiter} + #{app.users}"></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}"/>
+
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
+
+<!-- Content of the page -->
+<div id="content-wrap">
+    <h1 th:text="#{app.users}"></h1>
+    <p th:if="${param.success}" class="success">User created</p>
+    <p th:if="${param.error}" class="error">User already exists</p>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Username</th>
+            <th>Address</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.firstName}"></td>
+            <td th:text="${user.lastName}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.getAddress()}"></td>
+            <td>
+                <button>Edit user</button>
+            </td>
+            <td>
+                <button>X</button>
+            </td>
+        </tr>
+    </table>
+    <div>
+        <form action="/admin/users/add" method="get">
+            <button type="submit" class="button">Add user</button>
+        </form>
+    </div>
+</div>
+
+<!-- ./Content of the page -->
+
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+</body>
+</html>

@@ -1,43 +1,48 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<!-- Title -->
-		<title th:text="#{app.name} + #{title.delimiter} + #{login}"></title>
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{login}"></title>
 
-		<!-- Styles -->
-		<link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/login.css}"/>
 
-	</head>
-	<body>
-	<!-- Navigation bar imported -->
-	<div th:replace="fragments/navbar :: navBar"></div>
-	<!-- ./Navigation bar imported -->
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
 
-	<!-- Content of the page -->
-		<h1>Login</h1>
+<!-- Content of the page -->
+<div id="content-wrap">
+    <form th:action="@{/login}" method="post" class="align">
+        <section class="login-container">
+            <h3 th:text="#{login}"></h3>
+            <div>
+                <label for="username" th:text="#{form.login.username}"></label><input type="text" name="username"
+                                                                                      id="username"/>
+            </div>
+            <div>
+                <label for="password" th:text="#{form.login.password}"></label><input type="password" name="password"
+                                                                                      id="password"/>
+            </div>
+            <p th:if="${param.error}" class="error" th:text="#{form.login.message}"></p>
+            <div>
+                <button type="submit" class="button" th:text="#{login}"></button>
+            </div>
+        </section>
+    </form>
+</div>
+<!-- ./Content of the page -->
 
-		<p th:if="${param.error}" class="error">Wrong user or password!</p>
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
 
-		<form th:action="@{/login}" method="post">
-			<div>
-				<label for="username">Username: </label><input type="text" name="username" id="username" />
-			</div>
-			<div>
-				<label for="password">Password: </label><input type="password" name="password" id="password" />
-			</div>
-			<div>
-				<input type="submit" value="Login" />
-			</div>
-		</form>
-	<!-- ./Content of the page -->
-
-	<!-- Footer imported -->
-	<div th:replace="fragments/footer :: footer"></div>
-	<!-- ./Footer imported -->
-
-	</body>
+</body>
 </html>

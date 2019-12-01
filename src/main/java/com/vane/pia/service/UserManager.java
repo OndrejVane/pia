@@ -8,6 +8,6 @@ public interface UserManager {
 
 	List<User> getUsers();
 
-	void addUser(String username, String password);
+	boolean addUser(User user);
 
 }
