@@ -92,6 +92,7 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
                 .mvcMatchers("/admin/**").hasRole(Roles.ADMIN.getCode())
                 .regexMatchers(HttpMethod.GET, "^/css/.*").permitAll()
                 .regexMatchers(HttpMethod.GET, "^/img/.*").permitAll()
+                .regexMatchers(HttpMethod.GET, "^/js/.*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -121,6 +122,9 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
         registry
                 .addResourceHandler("/img/**")
                 .addResourceLocations("/img/");
+        registry
+                .addResourceHandler("/js/**")
+                .addResourceLocations("/js/");
     }
 
     @Bean
@@ -129,8 +133,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("pianotificator@gmail.com");
-        mailSender.setPassword("piapiapia");
+        mailSender.setUsername("mial@gmail.com");
+        mailSender.setPassword("password");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

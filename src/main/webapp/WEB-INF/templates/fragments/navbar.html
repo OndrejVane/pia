@@ -35,7 +35,7 @@
             <!-- This items are render only for authenticated users -->
             <div sec:authorize="isAuthenticated()">
                 <a href="/logout" style="float:right" th:text="#{logout}"></a>
-                <a href="/user" style="float:right" th:text="#{user}" th:classappend="${#request.getRequestURI() == '/user' ? 'active':''}"></a>
+                <a href="/user" style="float:right" sec:authentication="principal.fullName" th:classappend="${#request.getRequestURI() == '/user' ? 'active':''}"></a>
             </div>
             <!-- ./This items are render only for authenticated users -->
 

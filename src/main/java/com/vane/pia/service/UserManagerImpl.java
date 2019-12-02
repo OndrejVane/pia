@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -73,13 +74,42 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }
 
         // send mail async
-        CompletableFuture.runAsync(() -> mailService.sendRegistrationMail(user));
+        //CompletableFuture.runAsync(() -> mailService.sendRegistrationMail(user));
 
         String hashed = this.encoder.encode(user.getPassword());
         user.setPassword(hashed);
         this.userRepo.save(user);
         log.debug("User successfully created");
         return true;
+    }
+
+    @Override
+    public void updateUserDetails(User user) {
+        WebCredentials currentUser = getCurrentUser();
+        User updatedUser = userRepo.findByUsername(currentUser.getUsername());
+        if (updatedUser == null) {
+            throw new UsernameNotFoundException("Invalid username!");
+        }
+        user.setCreateDateTime(updatedUser.getCreateDateTime());
+        user.setPassword(currentUser.getPassword());
+        user.setUsername(currentUser.getUsername());
+        user.setId(currentUser.getId());
+        user.setRoles(updatedUser.getRoles());
+        userRepo.save(user);
+        log.info("User " + user.getUsername() + " has been updated");
+    }
+
+    @Override
+    public void changePassword(String newPassword) {
+        WebCredentials currentUser = getCurrentUser();
+        User user = userRepo.findByUsername(currentUser.getUsername());
+        if (user == null) {
+            throw new UsernameNotFoundException("Invalid username!");
+        }
+
+        user.setPassword(encoder.encode(newPassword));
+        userRepo.save(user);
+        log.info("Password for user " + user.getUsername() + " has been changed");
     }
 
     @EventListener(classes = {
@@ -144,14 +174,26 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             throw new UsernameNotFoundException("Invalid username!");
         }
 
-        WebCredentials creds = new WebCredentials(user.getUsername(), user.getPassword());
+        WebCredentials webCredentials = new WebCredentials(user.getId(), user.getUsername(), user.getPassword(),
+                user.getFirstName(), user.getLastName());
 
         user.getRoles()
                 .stream()
                 .map(this::toSpringRole)
-                .forEach(creds::addRole);
+                .forEach(webCredentials::addRole);
 
-        return creds;
+        return webCredentials;
     }
+
+    @Override
+    public WebCredentials getCurrentUser() {
+        return (WebCredentials) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    @Override
+    public boolean checkPassword(String rawPassword) {
+        return encoder.matches(rawPassword, getCurrentUser().getPassword());
+    }
+
 
 }
