@@ -19,4 +19,6 @@ public interface UserManager {
 
 	boolean checkPassword(String password);
 
+	void deleteUserById(Long id);
+
 }

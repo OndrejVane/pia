@@ -33,19 +33,24 @@
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-        <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.firstName}"></td>
-            <td th:text="${user.lastName}"></td>
-            <td th:text="${user.username}"></td>
-            <td th:text="${user.getAddress()}"></td>
-            <td>
-                <button>Edit user</button>
-            </td>
-            <td>
-                <button>X</button>
-            </td>
-        </tr>
+
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.firstName}"></td>
+                <td th:text="${user.lastName}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.getAddress()}"></td>
+                <td>
+                    <button>Edit user</button>
+                </td>
+                <td>
+                    <form action="#" th:action="@{/admin/users}" method="post">
+                        <input type="hidden" th:value="${user.id}" th:name="userId">
+                        <button onclick="return confirm('Do you really want to delete this user?');" type="submit">X</button>
+                    </form>
+                </td>
+            </tr>
+
     </table>
     <div>
         <form action="/admin/users/add" method="get">

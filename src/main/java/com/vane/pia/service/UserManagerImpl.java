@@ -195,5 +195,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return encoder.matches(rawPassword, getCurrentUser().getPassword());
     }
 
+    @Override
+    @Transactional
+    public void deleteUserById(Long id){
+        userRepo.deleteUserById(id);
+    }
+
 
 }

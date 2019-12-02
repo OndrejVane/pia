@@ -2,27 +2,23 @@ package com.vane.pia.dao;
 
 import com.vane.pia.domain.User;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.persistence.AssociationOverride;
 import javax.transaction.Transactional;
 
 @SpringBootTest
 @Slf4j
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepo;
 
-    @Autowired
-    private PasswordEncoder encoder;
-
     @Test
     @Transactional
+    @Order(1)
     void testUserManipulation() {
         log.info("Testing accountant manipulation.");
         Assertions.assertEquals(4, userRepo.count());
@@ -82,6 +78,7 @@ class UserRepositoryTest {
 
     @Test
     @Transactional
+    @Order(2)
     void testUpdateUser() {
         log.info("Testing user update method");
         User user = userRepo.findByUsername("qwer1111");
@@ -101,5 +98,19 @@ class UserRepositoryTest {
         Assertions.assertEquals("Snow", updatedUser.getLastName());
         log.info("User has been successfully updated");
 
+    }
+
+    @Test
+    @Transactional
+    @Order(3)
+    void deleteUserById() {
+        User user = userRepo.findByUsername("qwer1111");
+        Assertions.assertNotNull(user);
+        log.info("User found");
+        userRepo.deleteUserById(user.getId());
+        log.info("User deleted");
+        user = userRepo.findByUsername("qwer1111");
+        Assertions.assertNull(user);
+        log.info("User is null, deleted");
     }
 }
