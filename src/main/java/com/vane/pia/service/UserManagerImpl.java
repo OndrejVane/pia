@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -84,7 +85,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     }
 
     @Override
-    public void updateUserDetails(User user) {
+    public void updateCurrentUserDetails(User user) {
         WebCredentials currentUser = getCurrentUser();
         User updatedUser = userRepo.findByUsername(currentUser.getUsername());
         if (updatedUser == null) {
@@ -94,6 +95,20 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         user.setPassword(currentUser.getPassword());
         user.setUsername(currentUser.getUsername());
         user.setId(currentUser.getId());
+        user.setRoles(updatedUser.getRoles());
+        userRepo.save(user);
+        log.info("User " + user.getUsername() + " has been updated");
+    }
+
+    public void updateUserDetails(User user, Long id){
+        User updatedUser = findUserById(id);
+        if (updatedUser == null) {
+            throw new UsernameNotFoundException("Invalid username!");
+        }
+        user.setCreateDateTime(updatedUser.getCreateDateTime());
+        user.setPassword(updatedUser.getPassword());
+        user.setUsername(updatedUser.getUsername());
+        user.setId(updatedUser.getId());
         user.setRoles(updatedUser.getRoles());
         userRepo.save(user);
         log.info("User " + user.getUsername() + " has been updated");
@@ -110,6 +125,18 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         user.setPassword(encoder.encode(newPassword));
         userRepo.save(user);
         log.info("Password for user " + user.getUsername() + " has been changed");
+    }
+
+    @Override
+    public void changePasswordToUser(Long userId, String newPassword){
+        User user = this.findUserById(userId);
+        if(user == null){
+            throw new UsernameNotFoundException("Invalid username!");
+        }
+
+        user.setPassword(encoder.encode(newPassword));
+        userRepo.save(user);
+        log.info("User password for user " + user.getUsername() + "has been successfully changed");
     }
 
     @EventListener(classes = {
@@ -201,5 +228,23 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         userRepo.deleteUserById(id);
     }
 
+
+    @Override
+    public User findUserById(Long id){
+        Optional<User> user = userRepo.findById(id);
+        if(user.isEmpty()){
+            throw new UsernameNotFoundException("Invalid Id!");
+        }
+        return user.get();
+    }
+
+    private void updateUser(User user){
+
+    }
+
+    @Override
+    public boolean checkUserId(Long id){
+        return userRepo.findById(id).isPresent();
+    }
 
 }

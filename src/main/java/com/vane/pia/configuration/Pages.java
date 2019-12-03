@@ -23,6 +23,7 @@ public class Pages {
     public static final String INFORMATION_PAGE_TEMPLATE = "information";
     public static final String ADD_USER_TEMPLATE = "add-user";
     public static final String USER_DETAIL_TEMPLATE = "user";
+    public static final String EDIT_USER_TEMPLATE = "edit-user";
 
     // pages with error
     public static final String ERROR_ADD_USER_PAGE = ADD_USER_PAGE + ERROR;

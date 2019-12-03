@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title th:text="#{app.title} + #{title.delimiter} + #{user}"></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="/js/userDetails.js"></script>
+
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
+
+<!-- Content of the page -->
+<div id="content-wrap">
+    <h1>User details</h1>
+    <form action="#" id="user-details-form" th:action="@{/admin/users/} + ${user.id} + '/details'" th:object="${user}" method="post">
+        <div class="form-container">
+            <h3 th:text="#{form.title.personalInformation}"></h3>
+            <table>
+                <tr>
+                    <td th:text="#{form.degree} + ':'"></td>
+                    <td><input type="text" th:field="*{degree}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.firstName} + ':*'"></td>
+                    <td><input type="text" th:field="*{firstName}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"> Error First
+                        Name
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.lastName} + ':*'"></td>
+                    <td><input type="text" th:field="*{lastName}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error Last Name
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.mail} + ':*'"></td>
+                    <td><input type="text" th:field="*{email}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Error Email</td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.phoneNumber} + ':'"></td>
+                    <td><input type="text" th:field="*{telephoneNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('telephoneNumber')}" th:errors="*{telephoneNumber}">
+                        Error Telephone Number
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.personalNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{personalIdentificationNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('personalIdentificationNumber')}"
+                        th:errors="*{personalIdentificationNumber}">Error PIDN
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <table>
+                <h3 th:text="#{form.title.address} + ':'">Address</h3>
+                <tr>
+                    <td th:text="#{form.street} + ':'"></td>
+                    <td><input type="text" th:field="*{street}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.city} + ':'"></td>
+                    <td><input type="text" th:field="*{city}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.houseNumber} + ':'"></td>
+                    <td><input type="text" th:field="*{houseNumber}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.zipCode} + ':'"></td>
+                    <td><input type="text" th:field="*{zipCode}" disabled/></td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-container">
+            <table>
+                <h3 th:text="#{form.title.payInfo}"></h3>
+                <tr>
+                    <td th:text="#{form.accountNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{accountNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}">Error
+                        Account Number
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.bankNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{bankNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('bankNumber')}" th:errors="*{bankNumber}">Error Bank
+                        Number
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.cardNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{cardNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}">Error Card
+                        Number
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-container">
+            <h3 th:text="#{form.title.roles}"></h3>
+            <ul>
+                <table>
+                    <tr th:each="role : ${roles}">
+                        <td>
+                            <input type="checkbox" th:value="${role.id}">
+                            <label th:text="${role.name}"></label>
+                        </td>
+                    </tr>
+                </table>
+            </ul>
+        </div>
+        <div class="form-buttons">
+            <small>* information has to be filled</small><br>
+            <p th:if="${param.successDetail}" class="success">User successfully updated</p>
+            <button onclick="enableInput()" type="button" class="button">Edit</button>
+            <button id="submit-button" type="submit" class="button" disabled>Save</button>
+        </div>
+    </form>
+
+    <h1 th:text="#{form.title.changePassword}"></h1>
+    <form action="#" id="user-password-form" th:action="@{/admin/users/} + ${user.id} + '/password'" method="post">
+        <div class="form-container">
+            <table>
+                <h3 th:text="#{form.title.password}"></h3>
+                <tr>
+                    <td th:text="#{form.user.newPassword} + ':*'"></td>
+                    <td><input type="password" th:name="newPassword"/></td>
+                </tr>
+                <tr>
+                    <td th:text="#{form.user.confirmPassword} + ':*'"></td>
+                    <td><input type="password" th:name="confirmPassword"/></td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-buttons">
+            <p th:if="${param.successPassword}" class="success" th:text="#{form.user.success.passwordChanged}"></p>
+            <p th:if="${param.confirmPassword}" class="error" th:text="#{form.user.error.wrongConfirmPassword}"></p>
+            <button type="submit" class="button" th:text="#{form.save}"></button>
+        </div>
+    </form>
+</div>
+<!-- ./Content of the page -->
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+</body>
+</html>

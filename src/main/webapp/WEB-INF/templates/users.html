@@ -41,7 +41,7 @@
                 <td th:text="${user.username}"></td>
                 <td th:text="${user.getAddress()}"></td>
                 <td>
-                    <button>Edit user</button>
+                    <a th:href="@{/admin/users/} + ${user.id}">Edit</a>
                 </td>
                 <td>
                     <form action="#" th:action="@{/admin/users}" method="post">

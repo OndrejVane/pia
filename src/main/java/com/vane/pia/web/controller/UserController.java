@@ -7,11 +7,14 @@ import com.vane.pia.model.WebCredentials;
 import com.vane.pia.service.UserManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -26,6 +29,11 @@ public class UserController {
 
     @Autowired
     private UserManager userManager;
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
+    }
 
     @GetMapping(Pages.USER_DETAIL_PAGE)
     public String showUserDetail(Model model) {
@@ -43,7 +51,7 @@ public class UserController {
             log.warn("BINDING RESULT ERROR");
             return Pages.ADD_USER_TEMPLATE;
         }
-        userManager.updateUserDetails(user);
+        userManager.updateCurrentUserDetails(user);
         return Pages.REDIRECT_USER_PAGE_DETAILS_SUCCESS;
     }
 

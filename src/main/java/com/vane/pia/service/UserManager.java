@@ -11,7 +11,7 @@ public interface UserManager {
 
 	boolean addUser(User user);
 
-	void updateUserDetails(User user);
+	void updateCurrentUserDetails(User user);
 
 	void changePassword(String password);
 
@@ -20,5 +20,13 @@ public interface UserManager {
 	boolean checkPassword(String password);
 
 	void deleteUserById(Long id);
+
+	User findUserById(Long id);
+
+	void updateUserDetails(User user, Long id);
+
+	void changePasswordToUser(Long userId, String newPassword);
+
+	boolean checkUserId(Long id);
 
 }
