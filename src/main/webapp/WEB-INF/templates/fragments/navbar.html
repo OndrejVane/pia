@@ -6,7 +6,6 @@
             <div>
                 <a href="/" style="font-weight:bold" th:text="#{home}" th:classappend="${#request.getRequestURI() == '/' ? 'active':''}"></a>
                 <a href="/information" th:text="#{information}" th:classappend="${#request.getRequestURI() == '/information' ? 'active':''}"></a>
-                <a href="/news" th:text="#{news}"th:classappend="${#request.getRequestURI() == '/news' ? 'active':''}"></a>
             </div>
             <!-- ./This items are render every time -->
 
