@@ -21,7 +21,7 @@ class UserRepositoryTest {
     @Order(1)
     void testUserManipulation() {
         log.info("Testing accountant manipulation.");
-        Assertions.assertEquals(4, userRepo.count());
+        Assertions.assertEquals(3, userRepo.count());
 
         // admin tests
         log.info("Looking for admin.");
@@ -41,37 +41,19 @@ class UserRepositoryTest {
         User user = userRepo.findByUsername("qwer2222");
         Assertions.assertNotNull(user);
         log.info("Found test.");
-        Assertions.assertEquals(1, user.getRoles().size());
-        log.info("User has one role, removing.");
-        user.getRoles().remove(0);
-        userRepo.save(user);
-        user = userRepo.findByUsername("qwer2222");
         Assertions.assertEquals(0, user.getRoles().size());
-        log.info("accountant has no role now, OK.");
-
-        // secretary tests
-        log.info("Looking for accountant.");
-        User secretary = userRepo.findByUsername("qwer3333");
-        Assertions.assertNotNull(secretary);
-        log.info("Found secretary.");
-        Assertions.assertEquals(1, secretary.getRoles().size());
-        log.info("Secretary has one role, removing.");
-        secretary.getRoles().remove(0);
-        userRepo.save(secretary);
-        secretary = userRepo.findByUsername("qwer3333");
-        Assertions.assertEquals(0, secretary.getRoles().size());
-        log.info("Secretary has no role now, OK.");
+        log.info("User has no role");
 
         // accountant tests
         log.info("Looking for accountant.");
-        User accountant = userRepo.findByUsername("qwer4444");
+        User accountant = userRepo.findByUsername("qwer3333");
         Assertions.assertNotNull(accountant);
         log.info("Found test.");
         Assertions.assertEquals(1, accountant.getRoles().size());
         log.info("Accountant has one role, removing.");
         accountant.getRoles().remove(0);
         userRepo.save(accountant);
-        accountant = userRepo.findByUsername("qwer4444");
+        accountant = userRepo.findByUsername("qwer3333");
         Assertions.assertEquals(0, accountant.getRoles().size());
         log.info("accountant has no role now, OK.");
     }

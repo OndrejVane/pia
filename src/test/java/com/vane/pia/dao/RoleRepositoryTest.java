@@ -20,7 +20,7 @@ class RoleRepositoryTest {
     @Transactional
     public void testUserRoles(){
         log.info("Testing role manipulation");
-        Assertions.assertEquals(4, roleRepository.count());
+        Assertions.assertEquals(2, roleRepository.count());
 
         // check admin role
         log.info("Test find role by code ADMIN");
@@ -36,20 +36,6 @@ class RoleRepositoryTest {
         admin = roleRepository.findByCode("ADMIN");
         Assertions.assertEquals(0, admin.getUsers().size());
 
-        // check user role
-        log.info("Test find role by code USER");
-        Role user = roleRepository.findByCode("USER");
-        Assertions.assertNotNull(user);
-        log.info("User role found, check role name User");
-        Assertions.assertEquals("Users", user.getName());
-        log.info("Check number of users with user role, should be one");
-        Assertions.assertEquals(1, user.getUsers().size());
-
-        user.getUsers().remove(0);
-        roleRepository.save(user);
-        user = roleRepository.findByCode("USER");
-        Assertions.assertEquals(0, user.getUsers().size());
-
         // check accountant role
         log.info("Test find role by code ACCOUNTANT");
         Role accountant = roleRepository.findByCode("ACCOUNTANT");
@@ -63,20 +49,6 @@ class RoleRepositoryTest {
         roleRepository.save(accountant);
         accountant = roleRepository.findByCode("ACCOUNTANT");
         Assertions.assertEquals(0, accountant.getUsers().size());
-
-        // check secretary role
-        log.info("Test find role by code SECRETARY");
-        Role secretary = roleRepository.findByCode("SECRETARY");
-        Assertions.assertNotNull(secretary);
-        log.info("Secretary role found, check role name Secretaries");
-        Assertions.assertEquals("Secretaries", secretary.getName());
-        log.info("Check number of users with secretary role, should be one");
-        Assertions.assertEquals(1, secretary.getUsers().size());
-
-        secretary.getUsers().remove(0);
-        roleRepository.save(secretary);
-        secretary = roleRepository.findByCode("SECRETARY");
-        Assertions.assertEquals(0, secretary.getUsers().size());
 
     }
 }

@@ -2,8 +2,6 @@ package com.vane.pia.model;
 
 public enum Roles {
     ADMIN("ADMIN", "Admins"),
-    USER("USER", "Users"),
-    SECRETARY("SECRETARY", "Secretaries"),
     ACCOUNTANT("ACCOUNTANT", "Accountants");
 
 

@@ -4,6 +4,7 @@ import com.vane.pia.dao.RoleRepository;
 import com.vane.pia.dao.UserRepository;
 import com.vane.pia.domain.Role;
 import com.vane.pia.domain.User;
+import com.vane.pia.model.Roles;
 import com.vane.pia.model.WebCredentials;
 import com.vane.pia.utils.mail.MailService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +39,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     // normal accountant
     private static final String ACCOUNTANT_NAME = "qwer3333";
-
-    // normal secretary
-    private static final String SECRETARY_NAME = "qwer4444";
 
     private final PasswordEncoder encoder;
 
@@ -132,10 +130,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
                     , "5500");
             newUser.setUsername(USER_NAME);
             this.addUser(newUser);
-            User user = this.userRepo.findByUsername(USER_NAME);
-            Role roleUser = this.roleRepo.findByCode("USER");
-            user.getRoles().add(roleUser);
-            this.userRepo.save(user);
 
             log.info("No accountant present, creating accountant.");
             User newAccountant = new User(ACCOUNTANT_NAME, DEFAULT_PASSWORD, "accountant", "accountant", "123456789", "Ing.", "Street",
@@ -146,16 +140,6 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             Role roleAccountant = this.roleRepo.findByCode("ACCOUNTANT");
             accountant.getRoles().add(roleAccountant);
             this.userRepo.save(accountant);
-
-            log.info("No secretary present, creating secretary.");
-            User newSecretary = new User(SECRETARY_NAME, DEFAULT_PASSWORD, "secretary", "secretary", "123456789", "Ing.", "Street",
-                    "City", 123, "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
-                    , "5500");
-            this.addUser(newSecretary);
-            User secretary = this.userRepo.findByUsername(SECRETARY_NAME);
-            Role roleSecretary = this.roleRepo.findByCode("SECRETARY");
-            secretary.getRoles().add(roleSecretary);
-            this.userRepo.save(secretary);
         }
     }
 
@@ -195,6 +179,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     @Override
     @Transactional
     public void deleteUserById(Long id) {
+        List<User> adminUsers = roleRepo.findByCode(Roles.ADMIN.getCode()).getUsers();
+        if ( adminUsers.size() == 1 && adminUsers.get(0).getId().equals(id)) {
+            log.warn("Attempt to delete last admin in app.");
+            return;
+        }
         userRepo.deleteUserById(id);
     }
 

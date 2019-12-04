@@ -87,7 +87,6 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
                 .authorizeRequests()
                 .mvcMatchers("/").permitAll()
                 .mvcMatchers("/information").permitAll()
-                .mvcMatchers("/news").permitAll()
                 .mvcMatchers("/login").permitAll()
                 .mvcMatchers("/admin/**").hasRole(Roles.ADMIN.getCode())
                 .regexMatchers(HttpMethod.GET, "^/css/.*").permitAll()

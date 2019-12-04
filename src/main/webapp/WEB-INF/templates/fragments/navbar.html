@@ -10,7 +10,7 @@
             <!-- ./This items are render every time -->
 
             <!-- This items are render only for all authenticated users -->
-            <div sec:authorize="hasRole('USER')">
+            <div sec:authorize="isAuthenticated()">
                 <a href="/bills"  th:text="#{bills}" th:classappend="${#request.getRequestURI() == '/bills' ? 'active':''}"></a>
             </div>
             <!-- ./This items are render only for authenticated users -->
