@@ -51,7 +51,7 @@ public class UserController {
             log.warn("BINDING RESULT ERROR");
             return Pages.ADD_USER_TEMPLATE;
         }
-        userManager.updateCurrentUserDetails(user);
+        userManager.updateUserDetails(user, userManager.getCurrentUser().getId());
         return Pages.REDIRECT_USER_PAGE_DETAILS_SUCCESS;
     }
 
@@ -70,7 +70,7 @@ public class UserController {
             return Pages.REDIRECT_USER_PAGE_PASSWORD_ERROR_CONFIRM;
         }
 
-        userManager.changePassword(newPassword);
+        userManager.changePasswordToUser(userManager.getCurrentUser().getId(), newPassword);
         return Pages.REDIRECT_USER_PAGE_PASSWORD_SUCCESS;
     }
 

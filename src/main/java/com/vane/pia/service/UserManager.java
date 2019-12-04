@@ -11,10 +11,6 @@ public interface UserManager {
 
 	boolean addUser(User user);
 
-	void updateCurrentUserDetails(User user);
-
-	void changePassword(String password);
-
 	WebCredentials getCurrentUser();
 
 	boolean checkPassword(String password);
