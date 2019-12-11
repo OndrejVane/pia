@@ -1,6 +1,7 @@
 package com.vane.pia.utils.generator;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.LinkOption;
@@ -25,4 +26,14 @@ class GeneratorTest {
         assertEquals(4, generatedPassword.length());
         assertTrue(isNumeric(generatedPassword));
     }
+
+    @Test
+    void generateBillNumber() {
+        Assertions.assertEquals("FP20190001", Generator.generateBillNumber(1, true));
+        Assertions.assertEquals("FV20190088", Generator.generateBillNumber(88, false));
+        Assertions.assertEquals("FP20190123", Generator.generateBillNumber(123, true));
+        Assertions.assertEquals("FV20199876", Generator.generateBillNumber(9876, false));
+    }
+
+
 }

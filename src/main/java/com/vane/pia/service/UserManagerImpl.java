@@ -1,7 +1,9 @@
 package com.vane.pia.service;
 
+import com.vane.pia.dao.CompanyRepository;
 import com.vane.pia.dao.RoleRepository;
 import com.vane.pia.dao.UserRepository;
+import com.vane.pia.domain.Company;
 import com.vane.pia.domain.Role;
 import com.vane.pia.domain.User;
 import com.vane.pia.model.Roles;
@@ -42,23 +44,28 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     private final PasswordEncoder encoder;
 
-    private final UserRepository userRepo;
-    private final RoleRepository roleRepo;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final CompanyRepository companyRepository;
 
     @Autowired
     private MailService mailService;
 
     @Autowired
-    public UserManagerImpl(PasswordEncoder encoder, UserRepository userRepo, RoleRepository roleRepo) {
+    public UserManagerImpl(PasswordEncoder encoder,
+                           UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           CompanyRepository companyRepository) {
         this.encoder = encoder;
-        this.userRepo = userRepo;
-        this.roleRepo = roleRepo;
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.companyRepository = companyRepository;
     }
 
     @Override
     public List<User> getUsers() {
         List<User> retVal = new LinkedList<>();
-        for (User user : this.userRepo.findAll()) {
+        for (User user : this.userRepository.findAll()) {
             retVal.add(user);
         }
         return Collections.unmodifiableList(retVal);
@@ -66,7 +73,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     @Override
     public boolean addUser(User user) {
-        if (this.userRepo.findByUsername(user.getUsername()) != null) {
+        if (this.userRepository.findByUsername(user.getUsername()) != null) {
             log.error("User already exists!");
             return false;
         }
@@ -76,7 +83,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
         String hashed = this.encoder.encode(user.getPassword());
         user.setPassword(hashed);
-        this.userRepo.save(user);
+        this.userRepository.save(user);
         log.debug("User successfully created");
         return true;
     }
@@ -91,7 +98,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         user.setUsername(updatedUser.getUsername());
         user.setId(updatedUser.getId());
         user.setRoles(updatedUser.getRoles());
-        userRepo.save(user);
+        userRepository.save(user);
         log.info("User " + user.getUsername() + " has been updated");
     }
 
@@ -103,43 +110,48 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         }
 
         user.setPassword(encoder.encode(newPassword));
-        userRepo.save(user);
+        userRepository.save(user);
         log.info("User password for user " + user.getUsername() + "has been successfully changed");
     }
 
     @EventListener(classes = {
             ContextRefreshedEvent.class
     })
-    @Order(2)
+    @Order(3)
     @Transactional
     public void setup() {
-        if (this.userRepo.count() == 0) {
+        if (this.userRepository.count() == 0) {
+            Company company = companyRepository.findAll().iterator().next();
+
             log.info("No admin present, creating admin.");
             User newAdmin = new User(ADMIN_USER_NAME, DEFAULT_PASSWORD, "admin", "admin", "123456789", "Ing.", "Street",
-                    "City", 123, "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
+                    "City", "123", "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
                     , "5500");
             this.addUser(newAdmin);
-            User admin = this.userRepo.findByUsername(ADMIN_USER_NAME);
-            Role roleAdmin = this.roleRepo.findByCode("ADMIN");
+            User admin = this.userRepository.findByUsername(ADMIN_USER_NAME);
+            Role roleAdmin = this.roleRepository.findByCode("ADMIN");
             admin.getRoles().add(roleAdmin);
-            this.userRepo.save(admin);
+            admin.getCompanies().add(company);
+            this.userRepository.save(admin);
 
             log.info("No user present, creating user.");
             User newUser = new User(USER_NAME, DEFAULT_PASSWORD, "user", "user", "123456789", "Ing.", "Street",
-                    "City", 123, "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
+                    "City", "123", "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
                     , "5500");
             newUser.setUsername(USER_NAME);
+            newUser.getCompanies().add(company);
             this.addUser(newUser);
 
             log.info("No accountant present, creating accountant.");
             User newAccountant = new User(ACCOUNTANT_NAME, DEFAULT_PASSWORD, "accountant", "accountant", "123456789", "Ing.", "Street",
-                    "City", 123, "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
+                    "City", "123", "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
                     , "5500");
             this.addUser(newAccountant);
-            User accountant = this.userRepo.findByUsername(ACCOUNTANT_NAME);
-            Role roleAccountant = this.roleRepo.findByCode("ACCOUNTANT");
+            User accountant = this.userRepository.findByUsername(ACCOUNTANT_NAME);
+            Role roleAccountant = this.roleRepository.findByCode("ACCOUNTANT");
             accountant.getRoles().add(roleAccountant);
-            this.userRepo.save(accountant);
+            accountant.getCompanies().add(company);
+            this.userRepository.save(accountant);
         }
     }
 
@@ -150,7 +162,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepo.findByUsername(username);
+        User user = userRepository.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("Invalid username!");
         }
@@ -179,18 +191,18 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     @Override
     @Transactional
     public void deleteUserById(Long id) {
-        List<User> adminUsers = roleRepo.findByCode(Roles.ADMIN.getCode()).getUsers();
-        if ( adminUsers.size() == 1 && adminUsers.get(0).getId().equals(id)) {
+        List<User> adminUsers = roleRepository.findByCode(Roles.ADMIN.getCode()).getUsers();
+        if (adminUsers.size() == 1 && adminUsers.get(0).getId().equals(id)) {
             log.warn("Attempt to delete last admin in app.");
             return;
         }
-        userRepo.deleteUserById(id);
+        userRepository.deleteUserById(id);
     }
 
 
     @Override
     public User findUserById(Long id) {
-        Optional<User> user = userRepo.findById(id);
+        Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
             throw new UsernameNotFoundException("Invalid Id!");
         }
@@ -199,7 +211,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     @Override
     public boolean checkUserId(Long id) {
-        return userRepo.findById(id).isPresent();
+        return userRepository.findById(id).isPresent();
     }
 
 }

@@ -41,7 +41,7 @@ public class User extends EntityParent {
 
     private String city;
 
-    private int houseNumber;
+    private String houseNumber;
 
     @Pattern(regexp = "[0-9]{5}")
     private String zipCode;
@@ -71,6 +71,8 @@ public class User extends EntityParent {
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
+    @OneToMany(mappedBy = "user")
+    private List<Bill> bills = new LinkedList<>();
 
     @ManyToMany
     @JoinTable(
@@ -78,6 +80,13 @@ public class User extends EntityParent {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private List<Role> roles = new LinkedList<>();
+
+    @ManyToMany
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private List<Company> companies = new LinkedList<>();
 
     public User(String username, String password) {
         this.setUsername(username);
@@ -87,7 +96,7 @@ public class User extends EntityParent {
     public User(@NotNull String username, @NotNull String password, @NotNull String firstName, @NotNull String lastName,
                 @NotNull String personalIdentificationNumber,
                 String degree, String street, String city,
-                int houseNumber, String zipCode, @NotNull @Email String email,
+                String houseNumber, String zipCode, @NotNull @Email String email,
                 @Pattern(regexp = "(\\+420)[0-9]{9}") String telephoneNumber,
                 @NotNull @Pattern(regexp = "[0-9]{16}") String cardNumber,
                 @NotNull @Pattern(regexp = "[0-9]{16}") String accountNumber,
@@ -114,7 +123,7 @@ public class User extends EntityParent {
         this.setUsername(Generator.generateUsername());
     }
 
-    public String getAddress(){
+    public String getAddress() {
         return this.street + " " + this.houseNumber + "," +
                 this.city + " " + this.zipCode;
     }

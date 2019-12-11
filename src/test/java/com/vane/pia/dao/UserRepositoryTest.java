@@ -81,18 +81,4 @@ class UserRepositoryTest {
         log.info("User has been successfully updated");
 
     }
-
-    @Test
-    @Transactional
-    @Order(3)
-    void deleteUserById() {
-        User user = userRepo.findByUsername("qwer1111");
-        Assertions.assertNotNull(user);
-        log.info("User found");
-        userRepo.deleteUserById(user.getId());
-        log.info("User deleted");
-        user = userRepo.findByUsername("qwer1111");
-        Assertions.assertNull(user);
-        log.info("User is null, deleted");
-    }
 }
