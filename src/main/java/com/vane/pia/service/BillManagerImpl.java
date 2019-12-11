@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -49,19 +50,55 @@ public class BillManagerImpl implements BillManager {
     public List<Bill> getBills() {
         List<Bill> retVal = new LinkedList<>();
         this.billRepository.findAll().forEach(retVal::add);
+        for (Bill bill : retVal) {
+            Calculator.calculateFieldsForBill(bill);
+        }
         return retVal;
     }
 
     @Override
-    public Bill getBillById(Long id){
+    public Bill getBillById(Long id) {
         Optional<Bill> result = this.billRepository.findById(id);
-        if(result.isEmpty()){
+        if (result.isEmpty()) {
             log.error("Bill not found");
         }
 
         Bill bill = result.get();
         Calculator.calculateFieldsForBill(bill);
         return bill;
+    }
+
+    @Override
+    public List<Bill> getAllIssuedBills() {
+        List<Bill> issuedBills = new ArrayList<>();
+        for (Bill bill : getBills()) {
+            if(!bill.getIsAccepted()){
+                issuedBills.add(bill);
+            }
+        }
+        return issuedBills;
+    }
+
+    @Override
+    public List<Bill> getAllAcceptedBills() {
+        List<Bill> acceptedBills = new ArrayList<>();
+        for (Bill bill : getBills()) {
+            if(bill.getIsAccepted()){
+                acceptedBills.add(bill);
+            }
+        }
+        return acceptedBills;
+    }
+
+    @Override
+    @Transactional
+    public void deleteBillById(Long id) {
+        Optional<Bill> bill = this.billRepository.findById(id);
+        if(bill.isEmpty()){
+            log.error("Bill not found");
+        }
+        this.itemRepository.deleteAllByBill(bill.get());
+        this.billRepository.deleteById(id);
     }
 
     @Override

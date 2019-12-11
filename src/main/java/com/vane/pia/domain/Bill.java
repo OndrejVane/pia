@@ -8,6 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -92,5 +93,15 @@ public class Bill extends EntityParent {
         this.issuedDate = issuedDate;
         this.dueDate = dueDate;
         this.isCash = isCash;
+    }
+
+    public String getIssuedCzDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return issuedDate.format(formatter);
+    }
+
+    public String getDueCzDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        return dueDate.format(formatter);
     }
 }

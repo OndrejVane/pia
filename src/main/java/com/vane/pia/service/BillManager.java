@@ -11,4 +11,10 @@ public interface BillManager {
     void addBill(Bill bill);
 
     Bill getBillById(Long id);
+
+    List<Bill> getAllIssuedBills();
+
+    List<Bill> getAllAcceptedBills();
+
+    void deleteBillById(Long id);
 }

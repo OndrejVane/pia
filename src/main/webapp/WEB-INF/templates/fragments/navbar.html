@@ -11,7 +11,7 @@
 
             <!-- This items are render only for all authenticated users -->
             <div sec:authorize="isAuthenticated()">
-                <a href="/bills"  th:text="#{bills}" th:classappend="${#request.getRequestURI() == '/bills' ? 'active':''}"></a>
+                <a href="/bills"  th:text="#{bills}" th:classappend="${#strings.contains(#request.getRequestURI(), 'bills') ? 'active':''}"></a>
             </div>
             <!-- ./This items are render only for authenticated users -->
 

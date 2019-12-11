@@ -10,6 +10,7 @@
 
     <!-- Styles -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}"/>
 
 </head>
 <body>
@@ -18,7 +19,52 @@
 <!-- ./Navigation bar imported -->
 
 <!-- Content of the page -->
-<h1 th:text="#{bills}"></h1>
+<div id="content-wrap">
+    <h1 th:text="#{bills}"></h1>
+    <div class="form-buttons">
+        <button class="button-small"><a th:href="@{/bills}">All</a></button>
+        <button class="button-small"><a th:href="@{/bills-accepted}">Accepted</a></button>
+        <button class="button-small"><a th:href="@{/bills-issued}">Issued</a></button>
+    </div>
+    <table>
+        <tr>
+            <th>Bill number</th>
+            <th>Name</th>
+            <th>Accountant</th>
+            <th>Issued date</th>
+            <th>Due date</th>
+            <th>Price</th>
+            <th>VAT</th>
+            <th>Total price</th>
+            <th>View</th>
+            <th>Delete</th>
+        </tr>
+        <tr th:each="bill : ${bills}">
+            <td th:text="${bill.billNumber}"></td>
+            <td th:text="${bill.name}"></td>
+            <td th:text="${bill.user.firstName + ' ' + bill.user.lastName}"></td>
+            <td th:text="${bill.getIssuedCzDate()}"></td>
+            <td th:text="${bill.getDueCzDate()}"></td>
+            <td th:text="${bill.price + ',-'}"></td>
+            <td th:text="${bill.vat + ',-'}"></td>
+            <td th:text="${bill.totalPrice + ',-'}"></td>
+            <td><a th:href="@{/}">Show</a></td>
+            <td>
+                <form action="#" th:action="@{/bills}" method="post">
+                    <input type="hidden" th:value="${bill.id}" th:name="billId">
+                    <button onclick="return confirm('Do you really want to delete this bill?');" type="submit">X</button>
+                </form>
+            </td>
+
+        </tr>
+    </table>
+
+    <div>
+        <form action="" method="get">
+            <button type="submit" class="button">Add new bill</button>
+        </form>
+    </div>
+</div>
 <!-- ./Content of the page -->
 
 
