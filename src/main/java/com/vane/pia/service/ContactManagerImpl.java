@@ -12,6 +12,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.LinkedList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -82,5 +84,17 @@ public class ContactManagerImpl implements ContactManager {
 
     public void addContact(Contact contact) {
         contactRepository.save(contact);
+    }
+
+    @Override
+    public List<Contact> getAllContacts() {
+        List<Contact> contacts = new LinkedList<>();
+        this.contactRepository.findAll().forEach(contacts::add);
+        return contacts;
+    }
+
+    @Override
+    public void deleteContactById(Long id) {
+        this.contactRepository.deleteById(id);
     }
 }

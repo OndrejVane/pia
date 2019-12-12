@@ -16,6 +16,7 @@ public class Pages {
     public static final String USER_DETAIL_PAGE = "/user";
     public static final String USER_DETAIL_EDIT_PAGE = "/user/details";
     public static final String USER_PASSWORD_EDIT_PAGE = "/user/password";
+    public static final String CONTACTS_PAGE = "/contacts";
 
     // html templates
     public static final String HOME_PAGE_TEMPLATE = "index";
@@ -24,6 +25,7 @@ public class Pages {
     public static final String ADD_USER_TEMPLATE = "add-user";
     public static final String USER_DETAIL_TEMPLATE = "user";
     public static final String EDIT_USER_TEMPLATE = "edit-user";
+    public static final String CONTACTS_TEMPLATE = "contacts";
 
     // pages with error
     public static final String ERROR_ADD_USER_PAGE = ADD_USER_PAGE + ERROR;

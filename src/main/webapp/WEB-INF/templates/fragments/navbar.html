@@ -13,6 +13,9 @@
             <div sec:authorize="isAuthenticated()">
                 <a href="/bills"  th:text="#{bills}" th:classappend="${#strings.contains(#request.getRequestURI(), 'bills') ? 'active':''}"></a>
             </div>
+            <div sec:authorize="isAuthenticated()">
+                <a href="/contacts"  th:text="#{contacts}" th:classappend="${#strings.contains(#request.getRequestURI(), 'contacts') ? 'active':''}"></a>
+            </div>
             <!-- ./This items are render only for authenticated users -->
 
             <!-- This items are render only for user ADMIN -->

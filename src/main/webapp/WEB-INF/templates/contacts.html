@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{contacts}"></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/table.css}"/>
+
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
+
+<!-- Content of the page -->
+<div id="content-wrap">
+    <h1 th:text="#{contacts}"></h1>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>DIČ</th>
+            <th>IČO</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+
+        <tr th:each="contact : ${contacts}">
+            <td th:text="${contact.name}"></td>
+            <td th:text="${contact.getAddress()}"></td>
+            <td th:text="${contact.taxIdentificationNumber}"></td>
+            <td th:text="${contact.identificationNumber}"></td>
+            <td>
+                <a th:href="@{/}">Edit</a>
+            </td>
+            <td>
+                <form action="#" th:action="@{/contacts}" method="post">
+                    <input type="hidden" th:value="${contact.id}" th:name="contactId">
+                    <button onclick="return confirm('Do you really want to delete this contact?');" type="submit">X</button>
+                </form>
+            </td>
+
+        </tr>
+
+    </table>
+    <div>
+        <form action="" method="get">
+            <button type="submit" class="button">Add new contact</button>
+        </form>
+    </div>
+</div>
+<!-- ./Content of the page -->
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+
+</body>
+</html>

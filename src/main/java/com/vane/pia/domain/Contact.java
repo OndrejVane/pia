@@ -107,4 +107,9 @@ public class Contact extends EntityParent{
         this.accountNumber = accountNumber;
         this.bankNumber = bankNumber;
     }
+
+    public String getAddress() {
+        return this.street + " " + this.houseNumber + "," +
+                this.city + " " + this.zipCode;
+    }
 }
