@@ -35,4 +35,9 @@ public class ContactsController {
         log.info("Delete contact with id: " + contactId);
         return "redirect:/admin/users";
     }
+
+    @GetMapping("/contacts-test")
+    public void text() {
+        throw new RuntimeException("Test exception");
+    }
 }
