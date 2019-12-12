@@ -6,6 +6,7 @@ import com.vane.pia.dao.UserRepository;
 import com.vane.pia.domain.Company;
 import com.vane.pia.domain.Role;
 import com.vane.pia.domain.User;
+import com.vane.pia.exception.LastAdminDeletingException;
 import com.vane.pia.exception.UserNotFoundException;
 import com.vane.pia.model.Roles;
 import com.vane.pia.model.WebCredentials;
@@ -23,10 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -92,7 +90,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return true;
     }
 
-    public void updateUserDetails(User user, Long id) {
+    public void updateUserDetails(User user, Long id, List<Role> roles) {
         User updatedUser = findUserById(id);
         if (updatedUser == null) {
             throw new UsernameNotFoundException("Invalid username!");
@@ -101,7 +99,9 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         user.setPassword(updatedUser.getPassword());
         user.setUsername(updatedUser.getUsername());
         user.setId(updatedUser.getId());
-        user.setRoles(updatedUser.getRoles());
+        if(roles != null){
+            user.setRoles(roles);
+        }
         userRepository.save(user);
         log.info("User " + user.getUsername() + " has been updated");
     }
@@ -194,11 +194,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
 
     @Override
     @Transactional
-    public void deleteUserById(Long id) {
+    public void deleteUserById(Long id) throws LastAdminDeletingException {
         List<User> adminUsers = roleRepository.findByCode(Roles.ADMIN.getCode()).getUsers();
         if (adminUsers.size() == 1 && adminUsers.get(0).getId().equals(id)) {
             log.warn("Attempt to delete last admin in app.");
-            return;
+            throw new LastAdminDeletingException("Attempt to delete last admin in app");
         }
         userRepository.deleteUserById(id);
     }

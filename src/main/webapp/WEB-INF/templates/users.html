@@ -23,6 +23,8 @@
     <h1 th:text="#{app.users}"></h1>
     <p th:if="${param.success}" class="success">User created</p>
     <p th:if="${param.error}" class="error">User already exists</p>
+    <p th:if="${param.adminDeleteError}" class="error">You can not delete last admin in app</p>
+
     <table>
         <tr>
             <th>Id</th>

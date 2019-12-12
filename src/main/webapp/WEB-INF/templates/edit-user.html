@@ -118,10 +118,16 @@
             <h3 th:text="#{form.title.roles}"></h3>
             <ul>
                 <table>
-                    <tr th:each="role : ${roles}">
+                    <tr th:each="role : ${userRoles}">
                         <td>
-                            <input type="checkbox" th:value="${role.id}">
+                            <input type="checkbox" name="roles" th:value="${role.id}" checked disabled>
                             <label th:text="${role.name}"></label>
+                        </td>
+                    </tr>
+                    <tr th:each="rolee : ${roles}">
+                        <td>
+                            <input type="checkbox" name="roles" th:value="${rolee.id}" disabled>
+                            <label th:text="${rolee.name}"></label>
                         </td>
                     </tr>
                 </table>

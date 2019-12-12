@@ -1,5 +1,5 @@
 function enableInput() {
-    var elements = document.querySelectorAll("#user-details-form input[type=text]");
+    var elements = document.getElementsByTagName('input');
     var button = document.getElementById("submit-button");
 
     for (var i = 0, element; element = elements[i++];) {

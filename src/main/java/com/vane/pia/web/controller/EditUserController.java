@@ -1,6 +1,7 @@
 package com.vane.pia.web.controller;
 
 import com.vane.pia.configuration.Pages;
+import com.vane.pia.domain.Role;
 import com.vane.pia.domain.User;
 import com.vane.pia.service.RoleManager;
 import com.vane.pia.service.UserManager;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -35,14 +38,21 @@ public class EditUserController {
     @GetMapping("/admin/users/{userId}")
     public String showUserDetails(@PathVariable String userId, Model model) {
 
-        model.addAttribute("user", userManager.findUserById(LongParser.parseLong(userId)));
-        model.addAttribute("roles", roleManager.getRoles());
+        User user = userManager.findUserById(LongParser.parseLong(userId));
+        model.addAttribute("user", user);
+        model.addAttribute("userRoles", userManager.findUserById(LongParser.parseLong(userId)).getRoles());
+        model.addAttribute("roles", roleManager.getAllRolesUserDontHave(user));
 
         return Pages.EDIT_USER_TEMPLATE;
     }
 
     @PostMapping("/admin/users/{userId}/details")
-    public String editUserDetails(@PathVariable String userId, @Valid User user, BindingResult bindingResult, Model model) {
+    public String editUserDetails(@PathVariable String userId,
+                                  @Valid User user,
+                                  BindingResult bindingResult,
+                                  @RequestParam(value = "roles" , required = false) Long[] roles ,
+                                  Model model) {
+
         if (bindingResult.hasErrors()) {
             log.warn("BINDING RESULT ERROR");
             model.addAttribute("roles", roleManager.getRoles());
@@ -50,9 +60,9 @@ public class EditUserController {
             model.addAttribute("user", user);
             return Pages.EDIT_USER_TEMPLATE;
         }
-        log.warn(user.toString());
-        userManager.updateUserDetails(user, LongParser.parseLong(userId));
-        return "redirect:/admin/users/"+userId+"?successDetail";
+
+        userManager.updateUserDetails(user, LongParser.parseLong(userId), roleManager.getRolesByIds(roles));
+        return "redirect:/admin/users/" + userId + "?successDetail";
     }
 
     @PostMapping("/admin/users/{userId}/password")
@@ -60,11 +70,11 @@ public class EditUserController {
                                    @RequestParam(value = "newPassword") String newPassword,
                                    @RequestParam(value = "confirmPassword") String confirmPassword) {
 
-        if(newPassword == null || !newPassword.equals(confirmPassword)){
+        if (newPassword == null || !newPassword.equals(confirmPassword)) {
             log.warn("Confirm password is not same");
-            return "redirect:/admin/users/"+userId+"?confirmPassword";
+            return "redirect:/admin/users/" + userId + "?confirmPassword";
         }
         userManager.changePasswordToUser(LongParser.parseLong(userId), newPassword);
-        return "redirect:/admin/users/"+userId+"?successPassword";
+        return "redirect:/admin/users/" + userId + "?successPassword";
     }
 }

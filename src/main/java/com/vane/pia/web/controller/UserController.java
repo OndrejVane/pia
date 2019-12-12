@@ -51,7 +51,7 @@ public class UserController {
             log.warn("BINDING RESULT ERROR");
             return Pages.ADD_USER_TEMPLATE;
         }
-        userManager.updateUserDetails(user, userManager.getCurrentUser().getId());
+        userManager.updateUserDetails(user, userManager.getCurrentUser().getId(), null);
         return Pages.REDIRECT_USER_PAGE_DETAILS_SUCCESS;
     }
 

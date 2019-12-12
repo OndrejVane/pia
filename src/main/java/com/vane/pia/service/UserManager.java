@@ -2,7 +2,9 @@ package com.vane.pia.service;
 
 import java.util.List;
 
+import com.vane.pia.domain.Role;
 import com.vane.pia.domain.User;
+import com.vane.pia.exception.LastAdminDeletingException;
 import com.vane.pia.model.WebCredentials;
 
 public interface UserManager {
@@ -15,11 +17,11 @@ public interface UserManager {
 
 	boolean checkPassword(String password);
 
-	void deleteUserById(Long id);
+	void deleteUserById(Long id) throws LastAdminDeletingException;
 
 	User findUserById(Long id);
 
-	void updateUserDetails(User user, Long id);
+	void updateUserDetails(User user, Long id, List<Role> roles);
 
 	void changePasswordToUser(Long userId, String newPassword);
 
