@@ -136,6 +136,7 @@
         <div class="form-buttons">
             <small>* information has to be filled</small><br>
             <p th:if="${param.successDetail}" class="success">User successfully updated</p>
+            <p th:if="${param.errorRoleAdmin}" class="error">You can not remove last admin in app</p>
             <button onclick="enableInput()" type="button" class="button">Edit</button>
             <button id="submit-button" type="submit" class="button" disabled>Save</button>
         </div>

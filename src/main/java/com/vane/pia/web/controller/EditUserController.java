@@ -3,6 +3,7 @@ package com.vane.pia.web.controller;
 import com.vane.pia.configuration.Pages;
 import com.vane.pia.domain.Role;
 import com.vane.pia.domain.User;
+import com.vane.pia.exception.LastAdminDeletingException;
 import com.vane.pia.service.RoleManager;
 import com.vane.pia.service.UserManager;
 import com.vane.pia.utils.LongParser;
@@ -61,7 +62,11 @@ public class EditUserController {
             return Pages.EDIT_USER_TEMPLATE;
         }
 
-        userManager.updateUserDetails(user, LongParser.parseLong(userId), roleManager.getRolesByIds(roles));
+        try {
+            userManager.updateUserDetails(user, LongParser.parseLong(userId), roleManager.getRolesByIds(roles));
+        } catch (LastAdminDeletingException e) {
+            return "redirect:/admin/users/" + userId + "?errorRoleAdmin";
+        }
         return "redirect:/admin/users/" + userId + "?successDetail";
     }
 

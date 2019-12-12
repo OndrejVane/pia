@@ -21,7 +21,7 @@ public interface UserManager {
 
 	User findUserById(Long id);
 
-	void updateUserDetails(User user, Long id, List<Role> roles);
+	void updateUserDetails(User user, Long id, List<Role> roles) throws LastAdminDeletingException;
 
 	void changePasswordToUser(Long userId, String newPassword);
 

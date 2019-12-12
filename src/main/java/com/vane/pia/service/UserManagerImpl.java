@@ -90,7 +90,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         return true;
     }
 
-    public void updateUserDetails(User user, Long id, List<Role> roles) {
+    @Override
+    public void updateUserDetails(User user, Long id, List<Role> roles) throws LastAdminDeletingException {
         User updatedUser = findUserById(id);
         if (updatedUser == null) {
             throw new UsernameNotFoundException("Invalid username!");
@@ -100,6 +101,13 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         user.setUsername(updatedUser.getUsername());
         user.setId(updatedUser.getId());
         if(roles != null){
+            if(!roles.contains(this.roleRepository.findByCode(Roles.ADMIN.getCode()))){
+                List<User> adminUsers = roleRepository.findByCode(Roles.ADMIN.getCode()).getUsers();
+                if(adminUsers.size() == 1){
+                    log.warn("Try to remove last admin role");
+                    throw new LastAdminDeletingException("Try to remove last admin");
+                }
+            }
             user.setRoles(roles);
         }
         userRepository.save(user);

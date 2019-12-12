@@ -3,6 +3,7 @@ package com.vane.pia.web.controller;
 import com.vane.pia.configuration.Pages;
 import com.vane.pia.dao.UserRepository;
 import com.vane.pia.domain.User;
+import com.vane.pia.exception.LastAdminDeletingException;
 import com.vane.pia.model.WebCredentials;
 import com.vane.pia.service.UserManager;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,11 @@ public class UserController {
             log.warn("BINDING RESULT ERROR");
             return Pages.ADD_USER_TEMPLATE;
         }
-        userManager.updateUserDetails(user, userManager.getCurrentUser().getId(), null);
+        try {
+            userManager.updateUserDetails(user, userManager.getCurrentUser().getId(), null);
+        } catch (LastAdminDeletingException e) {
+            log.warn("Try to remove last role admin");
+        }
         return Pages.REDIRECT_USER_PAGE_DETAILS_SUCCESS;
     }
 
