@@ -4,6 +4,7 @@ package com.vane.pia.web.controller;
 import com.vane.pia.dao.UserRepository;
 import com.vane.pia.domain.User;
 import com.vane.pia.service.UserManager;
+import com.vane.pia.utils.LongParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -37,7 +38,7 @@ public class UsersController {
 
     @PostMapping("/admin/users")
     public String deleteUser(@RequestParam(value = "userId") String userId){
-        userManager.deleteUserById(Long.parseLong(userId));
+        userManager.deleteUserById(LongParser.parseLong(userId));
         log.info("Delete user with id: " + userId);
         return "redirect:/admin/users";
     }

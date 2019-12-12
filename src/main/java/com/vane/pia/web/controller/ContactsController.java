@@ -2,10 +2,10 @@ package com.vane.pia.web.controller;
 
 import com.vane.pia.configuration.Pages;
 import com.vane.pia.domain.Contact;
+import com.vane.pia.exception.UserNotFoundException;
 import com.vane.pia.service.ContactManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,10 +34,5 @@ public class ContactsController {
         contactManager.deleteContactById(Long.parseLong(contactId));
         log.info("Delete contact with id: " + contactId);
         return "redirect:/admin/users";
-    }
-
-    @GetMapping("/contacts-test")
-    public void text() {
-        throw new RuntimeException("Test exception");
     }
 }

@@ -4,6 +4,7 @@ import com.vane.pia.configuration.Pages;
 import com.vane.pia.domain.User;
 import com.vane.pia.service.RoleManager;
 import com.vane.pia.service.UserManager;
+import com.vane.pia.utils.LongParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -34,7 +35,7 @@ public class EditUserController {
     @GetMapping("/admin/users/{userId}")
     public String showUserDetails(@PathVariable String userId, Model model) {
 
-        model.addAttribute("user", userManager.findUserById(Long.parseLong(userId)));
+        model.addAttribute("user", userManager.findUserById(LongParser.parseLong(userId)));
         model.addAttribute("roles", roleManager.getRoles());
 
         return Pages.EDIT_USER_TEMPLATE;
@@ -45,12 +46,12 @@ public class EditUserController {
         if (bindingResult.hasErrors()) {
             log.warn("BINDING RESULT ERROR");
             model.addAttribute("roles", roleManager.getRoles());
-            user.setId(Long.parseLong(userId));
+            user.setId(LongParser.parseLong(userId));
             model.addAttribute("user", user);
             return Pages.EDIT_USER_TEMPLATE;
         }
         log.warn(user.toString());
-        userManager.updateUserDetails(user, Long.parseLong(userId));
+        userManager.updateUserDetails(user, LongParser.parseLong(userId));
         return "redirect:/admin/users/"+userId+"?successDetail";
     }
 
@@ -63,7 +64,7 @@ public class EditUserController {
             log.warn("Confirm password is not same");
             return "redirect:/admin/users/"+userId+"?confirmPassword";
         }
-        userManager.changePasswordToUser(Long.parseLong(userId), newPassword);
+        userManager.changePasswordToUser(LongParser.parseLong(userId), newPassword);
         return "redirect:/admin/users/"+userId+"?successPassword";
     }
 }

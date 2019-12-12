@@ -6,6 +6,7 @@ import com.vane.pia.dao.UserRepository;
 import com.vane.pia.domain.Company;
 import com.vane.pia.domain.Role;
 import com.vane.pia.domain.User;
+import com.vane.pia.exception.UserNotFoundException;
 import com.vane.pia.model.Roles;
 import com.vane.pia.model.WebCredentials;
 import com.vane.pia.utils.mail.MailService;
@@ -204,7 +205,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     public User findUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isEmpty()) {
-            throw new UsernameNotFoundException("Invalid Id!");
+            throw new UserNotFoundException(id);
         }
         return user.get();
     }
