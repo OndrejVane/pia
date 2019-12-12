@@ -82,6 +82,9 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         // send mail async
         //CompletableFuture.runAsync(() -> mailService.sendRegistrationMail(user));
 
+        // set company to user
+        user.getCompanies().add(this.companyRepository.findAll().iterator().next());
+
         String hashed = this.encoder.encode(user.getPassword());
         user.setPassword(hashed);
         this.userRepository.save(user);

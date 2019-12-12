@@ -41,8 +41,10 @@ public class AddUserController {
     }
 
     @PostMapping(Pages.ADD_USER_PAGE)
-    public String addUser(@Valid User newUser, BindingResult bindingResult, Model model) {
-        log.info("User:" + newUser.toString());
+    public String addUser(@Valid User newUser,
+                          BindingResult bindingResult,
+                          Model model) {
+
         if (bindingResult.hasErrors()) {
             log.warn("BINDING RESULT ERROR");
             model.addAttribute("selectRoles", roleManager.getRoles());
