@@ -4,6 +4,9 @@ import com.vane.pia.dao.CompanyRepository;
 import com.vane.pia.dao.ContactRepository;
 import com.vane.pia.domain.Company;
 import com.vane.pia.domain.Contact;
+import com.vane.pia.domain.User;
+import com.vane.pia.exception.ContactNotFoundException;
+import com.vane.pia.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -82,6 +86,7 @@ public class ContactManagerImpl implements ContactManager {
 
     }
 
+    @Override
     public void addContact(Contact contact) {
         contactRepository.save(contact);
     }
@@ -96,5 +101,14 @@ public class ContactManagerImpl implements ContactManager {
     @Override
     public void deleteContactById(Long id) {
         this.contactRepository.deleteById(id);
+    }
+
+    @Override
+    public Contact findContactById(Long id) {
+        Optional<Contact> contact = contactRepository.findById(id);
+        if (contact.isEmpty()) {
+            throw new ContactNotFoundException(id);
+        }
+        return contact.get();
     }
 }

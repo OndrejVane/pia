@@ -21,6 +21,7 @@
 <!-- Content of the page -->
 <div id="content-wrap">
     <h1 th:text="#{contacts}"></h1>
+    <p th:if="${param.success}" class="success">Contact created</p>
     <table>
         <tr>
             <th>Name</th>
@@ -34,10 +35,10 @@
         <tr th:each="contact : ${contacts}">
             <td th:text="${contact.name}"></td>
             <td th:text="${contact.getAddress()}"></td>
-            <td th:text="${contact.taxIdentificationNumber}"></td>
             <td th:text="${contact.identificationNumber}"></td>
+            <td th:text="${contact.taxIdentificationNumber}"></td>
             <td>
-                <a th:href="@{/}">Edit</a>
+                <a th:href="@{/contacts/} + ${contact.id}">Edit</a>
             </td>
             <td>
                 <form action="#" th:action="@{/contacts}" method="post">
@@ -50,7 +51,7 @@
 
     </table>
     <div>
-        <form action="" method="get">
+        <form action="/contacts/add" method="get">
             <button type="submit" class="button">Add new contact</button>
         </form>
     </div>
