@@ -24,7 +24,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -100,15 +103,19 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         user.setPassword(updatedUser.getPassword());
         user.setUsername(updatedUser.getUsername());
         user.setId(updatedUser.getId());
-        if(roles != null){
-            if(!roles.contains(this.roleRepository.findByCode(Roles.ADMIN.getCode()))){
+        if (roles != null) {
+            log.info("Changing roles for user with id " + user.getId());
+            if (!roles.contains(this.roleRepository.findByCode(Roles.ADMIN.getCode()))) {
                 List<User> adminUsers = roleRepository.findByCode(Roles.ADMIN.getCode()).getUsers();
-                if(adminUsers.size() == 1){
+                if (adminUsers.size() == 1) {
                     log.warn("Try to remove last admin role");
                     throw new LastAdminDeletingException("Try to remove last admin");
                 }
             }
             user.setRoles(roles);
+        } else {
+            log.info("No change in roles");
+            user.setRoles(updatedUser.getRoles());
         }
         userRepository.save(user);
         log.info("User " + user.getUsername() + " has been updated");
