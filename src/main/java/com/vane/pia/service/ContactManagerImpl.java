@@ -4,9 +4,7 @@ import com.vane.pia.dao.CompanyRepository;
 import com.vane.pia.dao.ContactRepository;
 import com.vane.pia.domain.Company;
 import com.vane.pia.domain.Contact;
-import com.vane.pia.domain.User;
 import com.vane.pia.exception.ContactNotFoundException;
-import com.vane.pia.exception.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -88,6 +86,8 @@ public class ContactManagerImpl implements ContactManager {
 
     @Override
     public void addContact(Contact contact) {
+        // set company to contact
+        contact.setCompany(companyRepository.findAll().iterator().next());
         contactRepository.save(contact);
     }
 
