@@ -1,67 +1,72 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <style>
-        table td{
-            vertical-align:top;
-            border:solid 1px #888;
-            padding:10px;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        .center{
-            text-align: center;
-        }
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{app.welcome}"></title>
 
-        table {
-            width: 100%;
-        }
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/error.css}"/>
 
-    </style>
 </head>
 <body>
-<h1 class="center">&#128544; Something went wrong &#128544;</h1>
-<a th:href="@{/}" class="center">Go home</a>
-<a th:href="@{/information}" class="center">Information</a>
-<!-- If is admin, show all information -->
-<div sec:authorize="hasRole('ADMIN')">
-    <table>
-        <tr>
-            <td>Date</td>
-            <td th:text="${timestamp}"/>
-        </tr>
-        <tr>
-            <td>Path</td>
-            <td th:text="${path}"/>
-        </tr>
-        <tr>
-            <td>Error</td>
-            <td th:text="${error}"/>
-        </tr>
-        <tr>
-            <td>Status</td>
-            <td th:text="${status}"/>
-        </tr>
-        <tr>
-            <td>Message</td>
-            <td th:text="${message}"/>
-        </tr>
-        <tr>
-            <td>Trace</td>
-            <td>
-                <pre th:text="${trace}"/>
-            </td>
-        </tr>
-    </table>
-</div>
-<!-- ./If is admin, show all information -->
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
 
-<!-- If is someone else, show just message -->
-<div>
-    <h2 th:text="${message}"></h2>
-    <h3>Please contact administrator with exception UID. You can find contact in the Information tab.</h3>
-</div>
-<!-- ./If is someone else, show just message -->
+<!-- Content of the page -->
+<div id="content-wrap">
+    <h1 class="center">&#128544; Something went wrong &#128544;</h1>
+    <!-- If is admin, show all information -->
+    <div sec:authorize="hasRole('ADMIN')">
+        <table>
+            <tr>
+                <td>Date</td>
+                <td th:text="${timestamp}"/>
+            </tr>
+            <tr>
+                <td>Path</td>
+                <td th:text="${path}"/>
+            </tr>
+            <tr>
+                <td>Error</td>
+                <td th:text="${error}"/>
+            </tr>
+            <tr>
+                <td>Status</td>
+                <td th:text="${status}"/>
+            </tr>
+            <tr>
+                <td>Message</td>
+                <td th:text="${message}"/>
+            </tr>
+            <tr>
+                <td>Trace</td>
+                <td>
+                    <pre th:text="${trace}"/>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!-- ./If is admin, show all information -->
 
+    <!-- If is someone else, show just message -->
+    <div>
+        <h2 th:text="${message}"></h2>
+        <h3>Please contact administrator with exception UID. You can find contact in the Information tab.</h3>
+    </div>
+    <!-- ./If is someone else, show just message -->
+</div>
+<!-- Content of the page -->
+
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
 </body>
 </html>
+
