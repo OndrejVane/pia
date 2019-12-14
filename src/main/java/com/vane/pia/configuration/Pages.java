@@ -44,6 +44,7 @@ public class Pages {
     public static final String REDIRECT_USER_PAGE_PASSWORD_ERROR_CONFIRM = REDIRECT + USER_DETAIL_PAGE + "?confirmPassword";
     public static final String REDIRECT_USER_PAGE_PASSWORD_ERROR_INCORRECT = REDIRECT + USER_DETAIL_PAGE + "?passwordIncorrect";
     public static final String REDIRECT_CONTACTS_PAGE_WITH_SUCCESS = REDIRECT + CONTACTS_PAGE + SUCCESS;
+    public static final String REDIRECT_CONTACTS_PAGE = REDIRECT + CONTACTS_PAGE;
 
 
     // forwards

@@ -29,10 +29,10 @@ public class ContactsController {
     }
 
     @PostMapping(Pages.CONTACTS_PAGE)
-    public String deleteUser(@RequestParam(value = "contact") String contactId){
+    public String deleteUser(@RequestParam(value = "contactId") String contactId){
         // TODO zkontrolovat, jestli není tento kontakt u nějaké faktury, pokud ano, tak nelze smazat
         contactManager.deleteContactById(Long.parseLong(contactId));
         log.info("Delete contact with id: " + contactId);
-        return "redirect:/admin/users";
+        return Pages.REDIRECT_CONTACTS_PAGE;
     }
 }
