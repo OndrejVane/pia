@@ -19,6 +19,7 @@ public class Pages {
     public static final String CONTACTS_PAGE = "/contacts";
     public static final String CONTACT_PAGE = "/contacts/{contactId}";
     public static final String ADD_CONTACT_PAGE = "/contacts/add";
+    public static final String COMPANY_PAGE = "/company";
 
     // html templates
     public static final String HOME_PAGE_TEMPLATE = "index";
@@ -30,6 +31,7 @@ public class Pages {
     public static final String CONTACTS_TEMPLATE = "contacts";
     public static final String EDIT_CONTACT_TEMPLATE = "edit-contact";
     public static final String ADD_CONTACT_TEMPLATE = "add-contact";
+    public static final String COMPANY_TEMPLATE = "company";
 
     // pages with error
     public static final String ERROR_ADD_USER_PAGE = ADD_USER_PAGE + ERROR;
@@ -45,6 +47,7 @@ public class Pages {
     public static final String REDIRECT_USER_PAGE_PASSWORD_ERROR_INCORRECT = REDIRECT + USER_DETAIL_PAGE + "?passwordIncorrect";
     public static final String REDIRECT_CONTACTS_PAGE_WITH_SUCCESS = REDIRECT + CONTACTS_PAGE + SUCCESS;
     public static final String REDIRECT_CONTACTS_PAGE = REDIRECT + CONTACTS_PAGE;
+    public static final String REDIRECT_COMPANY_PAGE_WITH_SUCCESS = REDIRECT + COMPANY_PAGE + SUCCESS;
 
 
     // forwards

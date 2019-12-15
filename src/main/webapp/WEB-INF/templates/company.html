@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{company}"></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/form.css}"/>
+
+    <!-- Scripts -->
+    <script type="text/javascript" src="/js/userDetails.js"></script>
+
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
+
+<!-- Content of the page -->
+<div id="content-wrap">
+    <h1>Company details</h1>
+    <form action="#" th:action="@{/company}" th:object="${company}" method="post">
+        <div class="form-container">
+            <h3 th:text="#{form.contact.title.basicInformation}"></h3>
+            <table>
+                <tr>
+                    <td th:text="#{form.contact.companyName} + ':*'"></td>
+                    <td><input type="text" th:field="*{name}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+                </tr>
+
+                <tr>
+                    <td th:text="#{form.street} + ':*'"></td>
+                    <td><input type="text" th:field="*{street}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></td>
+                </tr>
+
+                <tr>
+                    <td th:text="#{form.houseNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{houseNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('houseNumber')}" th:errors="*{houseNumber}"></td>
+                </tr>
+
+                <tr>
+                    <td th:text="#{form.city} + ':*'"></td>
+                    <td><input type="text" th:field="*{city}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></td>
+                </tr>
+
+                <tr>
+                    <td th:text="#{form.zipCode} + ':*'"></td>
+                    <td><input type="text" th:field="*{zipCode}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('zipCode')}" th:errors="*{zipCode}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-container">
+            <h3 th:text="#{form.contact.title.accountInformation}"></h3>
+            <table>
+                <tr>
+                    <td th:text="#{form.contact.identificationNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{identificationNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('identificationNumber')}" th:errors="*{identificationNumber}"></td>
+                </tr>
+
+                <tr>
+                    <td th:text="#{form.contact.taxIdentificationNumber} + ':'"></td>
+                    <td><input type="text" th:field="*{taxIdentificationNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('taxIdentificationNumber')}" th:errors="*{taxIdentificationNumber}"></td>
+                </tr>
+
+                <tr>
+                    <td th:text="#{form.accountNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{accountNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('accountNumber')}" th:errors="*{accountNumber}"></td>
+                </tr>
+
+                <tr>
+                    <td th:text="#{form.bankNumber} + ':*'"></td>
+                    <td><input type="text" th:field="*{bankNumber}" disabled/></td>
+                    <td class="error" th:if="${#fields.hasErrors('bankNumber')}" th:errors="*{bankNumber}"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="form-buttons">
+            <small>* information has to be filled</small><br>
+            <p th:if="${param.success}" class="success">Company successfully updated</p>
+            <p th:if="${param.error}" class="success">You did not fill all information</p>
+            <button onclick="enableInput()" type="button" class="button">Edit</button>
+            <button id="submit-button" type="submit" class="button" disabled>Save</button>
+        </div>
+    </form>
+</div>
+<!-- Content of the page -->
+
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+</body>
+</html>

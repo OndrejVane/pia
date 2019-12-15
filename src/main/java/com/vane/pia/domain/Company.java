@@ -46,7 +46,6 @@ public class Company extends EntityParent {
     @Pattern(regexp = "(cz|CZ|Cz)[0-9]{8,10}")
     private String taxIdentificationNumber;
 
-    @NotNull
     private Integer numberOfBills;
 
     @NotNull

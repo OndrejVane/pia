@@ -7,4 +7,6 @@ public interface CompanyManager {
     void addCompany(Company company);
 
     Company getCompany();
+
+    void updateCompany(Company company);
 }

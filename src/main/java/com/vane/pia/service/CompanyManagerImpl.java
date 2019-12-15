@@ -55,4 +55,14 @@ public class CompanyManagerImpl implements CompanyManager {
         return companyRepository.findAll().iterator().next();
     }
 
+    @Override
+    public void updateCompany(Company company) {
+        Company foundCompany =  getCompany();
+
+        company.setId(foundCompany.getId());
+        company.setNumberOfBills(foundCompany.getNumberOfBills());
+
+        companyRepository.save(company);
+    }
+
 }
