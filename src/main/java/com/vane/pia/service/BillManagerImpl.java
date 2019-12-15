@@ -50,9 +50,7 @@ public class BillManagerImpl implements BillManager {
         Iterable<Bill> foundBills = this.billRepository.findAll();
         for (Bill bill : foundBills) {
             Calculator.calculateFieldsForBill(bill);
-            if(!bill.isDeleted()){
                 retVal.add(bill);
-            }
 
         }
         return retVal;
@@ -97,7 +95,7 @@ public class BillManagerImpl implements BillManager {
     @Transactional
     public void deleteBillById(Long id) {
         Optional<Bill> billOptional = this.billRepository.findById(id);
-        if(billOptional.isEmpty() || billOptional.get().isDeleted()){
+        if(billOptional.isEmpty()){
             log.warn("Bill not found");
             throw new BillNotFoundException(id);
         }

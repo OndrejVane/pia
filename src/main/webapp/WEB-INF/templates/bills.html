@@ -40,7 +40,8 @@
             <th>Delete</th>
         </tr>
         <tr th:each="bill : ${bills}">
-            <td th:text="${bill.billNumber}"></td>
+            <td th:if="${bill.deleted}"><s th:text="${bill.billNumber + ' '}"></s>CANCELED</td>
+            <td th:unless="${bill.deleted}" th:text="${bill.billNumber}"></td>
             <td th:text="${bill.name}"></td>
             <td th:text="${bill.user.firstName + ' ' + bill.user.lastName}"></td>
             <td th:text="${bill.getIssuedCzDate()}"></td>
@@ -52,7 +53,7 @@
             <td>
                 <form action="#" th:action="@{/bills}" method="post">
                     <input type="hidden" th:value="${bill.id}" th:name="billId">
-                    <button onclick="return confirm('Do you really want to delete this bill?');" type="submit">X</button>
+                    <button onclick="return confirm('Do you really want to delete this bill?');" type="submit" th:disabled="${bill.deleted}">X</button>
                 </form>
             </td>
 
