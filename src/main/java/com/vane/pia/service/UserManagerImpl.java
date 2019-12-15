@@ -68,7 +68,9 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     public List<User> getUsers() {
         List<User> retVal = new LinkedList<>();
         for (User user : this.userRepository.findAll()) {
-            retVal.add(user);
+            if(!user.isDeleted()){
+                retVal.add(user);
+            }
         }
         return Collections.unmodifiableList(retVal);
     }
@@ -103,6 +105,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
         user.setPassword(updatedUser.getPassword());
         user.setUsername(updatedUser.getUsername());
         user.setId(updatedUser.getId());
+        user.setDeleted(false);
         if (roles != null) {
             log.info("Changing roles for user with id " + user.getId());
             if (!roles.contains(this.roleRepository.findByCode(Roles.ADMIN.getCode()))) {
@@ -124,8 +127,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     @Override
     public void changePasswordToUser(Long userId, String newPassword) {
         User user = this.findUserById(userId);
-        if (user == null) {
-            throw new UsernameNotFoundException("Invalid username!");
+        if (user == null || user.isDeleted()) {
+            throw new UserNotFoundException(userId);
         }
 
         user.setPassword(encoder.encode(newPassword));
@@ -182,7 +185,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        if (user == null) {
+        if (user == null || user.isDeleted()) {
+            log.info("User not found or is deleted");
             throw new UsernameNotFoundException("Invalid username!");
         }
 
@@ -215,14 +219,16 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             log.warn("Attempt to delete last admin in app.");
             throw new LastAdminDeletingException("Attempt to delete last admin in app");
         }
-        userRepository.deleteUserById(id);
+        User user = this.findUserById(id);
+        user.setDeleted(true);
+        this.userRepository.save(user);
     }
 
 
     @Override
     public User findUserById(Long id) {
         Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
+        if (user.isEmpty() || user.get().isDeleted()) {
             throw new UserNotFoundException(id);
         }
         return user.get();

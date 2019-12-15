@@ -1,10 +1,7 @@
 package com.vane.pia.service;
 
 import com.vane.pia.dao.*;
-import com.vane.pia.domain.Bill;
-import com.vane.pia.domain.Company;
-import com.vane.pia.domain.Contact;
-import com.vane.pia.domain.User;
+import com.vane.pia.domain.*;
 import com.vane.pia.model.WebCredentials;
 import com.vane.pia.utils.Calculator;
 import com.vane.pia.utils.generator.Generator;
@@ -49,9 +46,13 @@ public class BillManagerImpl implements BillManager {
     @Override
     public List<Bill> getBills() {
         List<Bill> retVal = new LinkedList<>();
-        this.billRepository.findAll().forEach(retVal::add);
-        for (Bill bill : retVal) {
+        Iterable<Bill> foundBills = this.billRepository.findAll();
+        for (Bill bill : foundBills) {
             Calculator.calculateFieldsForBill(bill);
+            if(!bill.isDeleted()){
+                retVal.add(bill);
+            }
+
         }
         return retVal;
     }
@@ -59,7 +60,7 @@ public class BillManagerImpl implements BillManager {
     @Override
     public Bill getBillById(Long id) {
         Optional<Bill> result = this.billRepository.findById(id);
-        if (result.isEmpty()) {
+        if (result.isEmpty() || result.get().isDeleted()) {
             log.error("Bill not found");
         }
 
@@ -93,12 +94,17 @@ public class BillManagerImpl implements BillManager {
     @Override
     @Transactional
     public void deleteBillById(Long id) {
-        Optional<Bill> bill = this.billRepository.findById(id);
-        if(bill.isEmpty()){
+        Optional<Bill> billOptional = this.billRepository.findById(id);
+        if(billOptional.isEmpty() || billOptional.get().isDeleted()){
             log.error("Bill not found");
         }
-        this.itemRepository.deleteAllByBill(bill.get());
-        this.billRepository.deleteById(id);
+        Bill bill = billOptional.get();
+        for (Item item : bill.getItems()){
+            item.setDeleted(true);
+            this.itemRepository.save(item);
+        }
+        bill.setDeleted(true);
+        this.billRepository.save(bill);
     }
 
     @Override

@@ -33,6 +33,9 @@ public class Item extends EntityParent {
     @NotNull
     private Integer vatPercentage;
 
+    @NotNull
+    private boolean isDeleted;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
@@ -53,6 +56,7 @@ public class Item extends EntityParent {
     private Bill bill;
 
     public Item() {
+        this.isDeleted = false;
     }
 
     public Item(@NotNull String name,
@@ -65,6 +69,7 @@ public class Item extends EntityParent {
         this.price = price;
         this.count = count;
         this.vatPercentage = vatPercentage;
+        this.isDeleted = false;
     }
 
 

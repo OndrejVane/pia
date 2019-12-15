@@ -65,6 +65,9 @@ public class User extends EntityParent {
     @Pattern(regexp = "[0-9]{4}")
     private String bankNumber;
 
+    @NotNull
+    private boolean isDeleted;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
@@ -91,6 +94,7 @@ public class User extends EntityParent {
     public User(String username, String password) {
         this.setUsername(username);
         this.setPassword(password);
+        this.isDeleted = false;
     }
 
     public User(@NotNull String username, @NotNull String password, @NotNull String firstName, @NotNull String lastName,
@@ -116,11 +120,13 @@ public class User extends EntityParent {
         this.cardNumber = cardNumber;
         this.accountNumber = accountNumber;
         this.bankNumber = bankNumber;
+        this.isDeleted = false;
     }
 
     public User() {
         this.setPassword(Generator.generatePassword());
         this.setUsername(Generator.generateUsername());
+        this.isDeleted = false;
     }
 
     public String getAddress() {

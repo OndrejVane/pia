@@ -88,25 +88,36 @@ public class ContactManagerImpl implements ContactManager {
     public void addContact(Contact contact) {
         // set company to contact
         contact.setCompany(companyRepository.findAll().iterator().next());
+        contact.setDeleted(false);
         contactRepository.save(contact);
     }
 
     @Override
     public List<Contact> getAllContacts() {
         List<Contact> contacts = new LinkedList<>();
-        this.contactRepository.findAll().forEach(contacts::add);
+        Iterable<Contact> foundContacts = this.contactRepository.findAll();
+        for (Contact contact : foundContacts){
+            if(!contact.isDeleted()){
+                contacts.add(contact);
+            }
+        }
         return contacts;
     }
 
     @Override
     public void deleteContactById(Long id) {
-        this.contactRepository.deleteById(id);
+        Contact contact = this.findContactById(id);
+        if(contact == null){
+            throw new ContactNotFoundException(id);
+        }
+        contact.setDeleted(true);
+        this.contactRepository.save(contact);
     }
 
     @Override
     public Contact findContactById(Long id) {
         Optional<Contact> contact = contactRepository.findById(id);
-        if (contact.isEmpty()) {
+        if (contact.isEmpty() || contact.get().isDeleted()) {
             throw new ContactNotFoundException(id);
         }
         return contact.get();

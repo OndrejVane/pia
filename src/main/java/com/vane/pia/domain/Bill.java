@@ -50,6 +50,9 @@ public class Bill extends EntityParent {
     private Float totalPrice;
     // End - Calculated field
 
+    @NotNull
+    private boolean isDeleted;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
@@ -74,11 +77,8 @@ public class Bill extends EntityParent {
     private List<Item> items = new LinkedList<>();
 
 
-    public Bill(@NotNull String name) {
-        this.name = name;
-    }
-
     public Bill() {
+        this.isDeleted = false;
     }
 
     public Bill(@NotNull String name,
@@ -93,6 +93,7 @@ public class Bill extends EntityParent {
         this.issuedDate = issuedDate;
         this.dueDate = dueDate;
         this.isCash = isCash;
+        this.isDeleted = false;
     }
 
     public String getIssuedCzDate() {

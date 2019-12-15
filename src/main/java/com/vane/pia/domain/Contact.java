@@ -50,6 +50,9 @@ public class Contact extends EntityParent{
     @Pattern(regexp = "[0-9]{4}")
     private String bankNumber;
 
+    @NotNull
+    private boolean isDeleted;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
@@ -63,11 +66,9 @@ public class Contact extends EntityParent{
     @JoinColumn(name = "fk_company")
     private Company company;
 
-    public Contact(@NotNull String name) {
-        this.name = name;
-    }
 
     public Contact() {
+        this.isDeleted = false;
     }
 
     public Contact(@NotNull String name,
@@ -88,6 +89,7 @@ public class Contact extends EntityParent{
         this.taxIdentificationNumber = taxIdentificationNumber;
         this.accountNumber = accountNumber;
         this.bankNumber = bankNumber;
+        this.isDeleted = false;
     }
 
     public Contact(@NotNull String name,
@@ -106,6 +108,7 @@ public class Contact extends EntityParent{
         this.identificationNumber = identificationNumber;
         this.accountNumber = accountNumber;
         this.bankNumber = bankNumber;
+        this.isDeleted = false;
     }
 
     public String getAddress() {
