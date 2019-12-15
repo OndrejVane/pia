@@ -2,6 +2,7 @@ package com.vane.pia.service;
 
 import com.vane.pia.dao.*;
 import com.vane.pia.domain.*;
+import com.vane.pia.exception.BillNotFoundException;
 import com.vane.pia.model.WebCredentials;
 import com.vane.pia.utils.Calculator;
 import com.vane.pia.utils.generator.Generator;
@@ -62,6 +63,7 @@ public class BillManagerImpl implements BillManager {
         Optional<Bill> result = this.billRepository.findById(id);
         if (result.isEmpty() || result.get().isDeleted()) {
             log.error("Bill not found");
+            throw new BillNotFoundException(id);
         }
 
         Bill bill = result.get();
@@ -96,7 +98,8 @@ public class BillManagerImpl implements BillManager {
     public void deleteBillById(Long id) {
         Optional<Bill> billOptional = this.billRepository.findById(id);
         if(billOptional.isEmpty() || billOptional.get().isDeleted()){
-            log.error("Bill not found");
+            log.warn("Bill not found");
+            throw new BillNotFoundException(id);
         }
         Bill bill = billOptional.get();
         for (Item item : bill.getItems()){
