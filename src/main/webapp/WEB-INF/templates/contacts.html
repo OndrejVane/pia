@@ -28,8 +28,8 @@
             <th>Address</th>
             <th>DIČ</th>
             <th>IČO</th>
-            <th>Edit</th>
-            <th>Delete</th>
+            <th>View</th>
+            <th sec:authorize="hasRole('ACCOUNTANT')">Delete</th>
         </tr>
 
         <tr th:each="contact : ${contacts}">
@@ -38,9 +38,9 @@
             <td th:text="${contact.identificationNumber}"></td>
             <td th:text="${contact.taxIdentificationNumber}"></td>
             <td>
-                <a th:href="@{/contacts/} + ${contact.id}">Edit</a>
+                <a th:href="@{/contacts/} + ${contact.id}">Show</a>
             </td>
-            <td>
+            <td sec:authorize="hasRole('ACCOUNTANT')">
                 <form action="#" th:action="@{/contacts}" method="post">
                     <input type="hidden" th:value="${contact.id}" th:name="contactId">
                     <button onclick="return confirm('Do you really want to delete this contact?');" type="submit">X</button>
@@ -50,7 +50,7 @@
         </tr>
 
     </table>
-    <div>
+    <div sec:authorize="hasRole('ACCOUNTANT')">
         <form action="/contacts/add" method="get">
             <button type="submit" class="button">Add new contact</button>
         </form>

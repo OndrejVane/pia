@@ -6,6 +6,7 @@ import com.vane.pia.service.CompanyManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class CompanyController {
         return Pages.COMPANY_TEMPLATE;
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping(Pages.COMPANY_PAGE)
     public String editCompanyDetails(@Valid Company company, BindingResult bindingResult){
 

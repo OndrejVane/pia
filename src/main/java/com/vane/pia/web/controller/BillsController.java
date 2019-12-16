@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -63,6 +64,7 @@ public class BillsController {
         return "bills";
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping("/bills")
     public String deleteBill(@RequestParam(value = "billId") String billId){
         billManager.deleteBillById(Long.parseLong(billId));
@@ -79,6 +81,7 @@ public class BillsController {
         return Pages.SHOW_BILL_TEMPLATE;
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @GetMapping("/bills/{billId}/edit")
     public String showBillEditPage(@PathVariable String billId, Model model){
         Bill bill = billManager.getBillById(LongParser.parseLong(billId));
@@ -90,6 +93,7 @@ public class BillsController {
         return Pages.EDIT_BILL_TEMPLATE;
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping("/bills/{billId}/edit")
     public String saveEditedBill(@PathVariable String billId,
                                  @Valid Bill bill,
@@ -109,6 +113,7 @@ public class BillsController {
         return "redirect:/bills/" + billId + "?success";
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping("/bills/{billId}/edit/{itemId}")
     public String deleteItem(@PathVariable String billId,
                              @PathVariable String itemId){
@@ -122,6 +127,7 @@ public class BillsController {
         return "redirect:/bills/" + billId + "/edit";
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping("/bills/{billId}/edit/addItem")
     public String addItemToBill(@PathVariable String billId,
                                 @Valid Item item,

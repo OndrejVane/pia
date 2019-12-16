@@ -39,7 +39,7 @@
             <th>Total price</th>
             <th>Paid</th>
             <th>View</th>
-            <th>Delete</th>
+            <th sec:authorize="hasRole('ACCOUNTANT')">Delete</th>
         </tr>
         <tr th:each="bill : ${bills}">
             <td th:if="${bill.deleted}"><s th:text="${bill.billNumber + ' '}"></s></td>
@@ -54,7 +54,7 @@
             <td th:if="${bill.isPaid}"><span>&#10003;</span></td>
             <td th:unless="${bill.isPaid}"><span>&#10008;</span></td>
             <td><a th:href="@{/bills/} + ${bill.id}">Show</a></td>
-            <td>
+            <td sec:authorize="hasRole('ACCOUNTANT')">
                 <form action="#" th:action="@{/bills}" method="post">
                     <input type="hidden" th:value="${bill.id}" th:name="billId">
                     <button onclick="return confirm('Do you really want to delete this bill?');" type="submit" th:disabled="${bill.deleted}">X</button>
@@ -64,7 +64,7 @@
         </tr>
     </table>
 
-    <div>
+    <div sec:authorize="hasRole('ACCOUNTANT')">
         <form action="#" th:action="@{/bills/add/item}" method="get">
             <button type="submit" class="button">Add new bill</button>
         </form>

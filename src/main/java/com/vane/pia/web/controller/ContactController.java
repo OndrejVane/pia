@@ -7,6 +7,7 @@ import com.vane.pia.utils.LongParser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -39,6 +40,7 @@ public class ContactController {
         return Pages.EDIT_CONTACT_TEMPLATE;
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping(Pages.CONTACT_PAGE)
     public String updateContact(@PathVariable String contactId,
                                 @Valid Contact contact,

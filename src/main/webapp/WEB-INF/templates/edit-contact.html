@@ -87,7 +87,7 @@
                 </tr>
             </table>
         </div>
-        <div class="form-buttons">
+        <div sec:authorize="hasRole('ACCOUNTANT')" class="form-buttons">
             <small>* information has to be filled</small><br>
             <p th:if="${param.success}" class="success">Contact successfully updated</p>
             <p th:if="${param.error}" class="success">You did not fill all information</p>

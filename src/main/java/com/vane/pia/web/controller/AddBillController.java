@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.dom4j.rule.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -48,6 +49,7 @@ public class AddBillController {
         binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @GetMapping(Pages.ADD_BILL_ITEM_PAGE)
     public String showAddBillPage(Model model) {
         List<TempItem> items = tempItemManager.getAllTempItemsForCurrentUser();
@@ -59,6 +61,7 @@ public class AddBillController {
         return Pages.ADD_ITEMS_TEMPLATE;
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping("/bills/add/item")
     public String addItem(@Valid TempItem newTempItem,
                           BindingResult bindingResult,
@@ -76,6 +79,7 @@ public class AddBillController {
         return "redirect:/bills/add/item";
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping("/bills/add/item/{tempItemId}")
     public String deleteItem(@PathVariable String tempItemId){
         tempItemManager.deleteTempItemWithId(LongParser.parseLong(tempItemId));
@@ -83,6 +87,7 @@ public class AddBillController {
         return "redirect:/bills/add/item";
     }
 
+    @PreAuthorize("hasRole('ACCOUNTANT')")
     @PostMapping("/bills/add/bill")
     public String addNewBill(@Valid Bill bill, BindingResult bindingResult, Model model){
         List<TempItem> items = tempItemManager.getAllTempItemsForCurrentUser();
