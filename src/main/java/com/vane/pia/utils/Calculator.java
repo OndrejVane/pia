@@ -77,4 +77,14 @@ public class Calculator {
         }
         return total;
     }
+
+    public static TempItem calculateTotalPriceForItems(List<Item> items) {
+        TempItem total = new TempItem(0f, 0f, 0f);
+        for (Item item : items) {
+            total.setPrice(total.getPrice() + item.getPrice());
+            total.setVatAmount(total.getVatAmount() + item.getVatAmount());
+            total.setTotalPrice(total.getTotalPrice() + item.getTotalPrice());
+        }
+        return total;
+    }
 }

@@ -15,7 +15,7 @@ form {
     margin-bottom: 10px;
     margin-right: 5px;
     margin-left: 5px;
-    height: 230px;
+    height: 250px;
 }
 
 .form-container-wide {
@@ -65,6 +65,15 @@ h2 {
     width: 100%;
 }
 
+.wide{
+    width: 95%;
+}
+
+.wide table{
+    display: inline-block;
+    margin-right: 10%;
+}
+
 /* Mobile view*/
 @media screen and (max-width: 600px) {
     .form-container {
@@ -77,6 +86,10 @@ h2 {
     form {
         width: 100%;
         margin-left: 2%;
+    }
+
+    .wide table{
+        display: block;
     }
 }
 

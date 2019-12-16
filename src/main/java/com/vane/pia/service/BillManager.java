@@ -17,4 +17,6 @@ public interface BillManager {
     List<Bill> getAllAcceptedBills();
 
     void deleteBillById(Long id);
+
+    void updateBill(Bill bill, Long billId);
 }

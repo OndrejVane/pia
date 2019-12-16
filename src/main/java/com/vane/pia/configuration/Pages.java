@@ -34,6 +34,8 @@ public class Pages {
     public static final String ADD_CONTACT_TEMPLATE = "add-contact";
     public static final String COMPANY_TEMPLATE = "company";
     public static final String ADD_ITEMS_TEMPLATE = "add-bill";
+    public static final String SHOW_BILL_TEMPLATE = "show-bill";
+    public static final String EDIT_BILL_TEMPLATE = "edit-bill";
 
     // pages with error
     public static final String ERROR_ADD_USER_PAGE = ADD_USER_PAGE + ERROR;

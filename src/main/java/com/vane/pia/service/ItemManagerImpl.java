@@ -4,6 +4,7 @@ import com.vane.pia.dao.BillRepository;
 import com.vane.pia.dao.ItemRepository;
 import com.vane.pia.domain.Bill;
 import com.vane.pia.domain.Item;
+import com.vane.pia.exception.ItemNotFoundException;
 import com.vane.pia.utils.Calculator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -99,5 +101,16 @@ public class ItemManagerImpl implements ItemManager {
     public void addItem(Item item) {
         Calculator.calculateFieldForItem(item);
         this.itemRepository.save(item);
+    }
+
+    @Override
+    @Transactional
+    public void deleteItemWithId(Long id) {
+        Optional<Item> item = itemRepository.findById(id);
+        if(item.isEmpty()){
+            throw new ItemNotFoundException(id);
+        }
+        log.info("Deleting item with id: " + id);
+        itemRepository.delete(item.get());
     }
 }

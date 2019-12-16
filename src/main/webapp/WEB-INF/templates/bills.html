@@ -37,11 +37,12 @@
             <th>Price</th>
             <th>VAT</th>
             <th>Total price</th>
+            <th>Paid</th>
             <th>View</th>
             <th>Delete</th>
         </tr>
         <tr th:each="bill : ${bills}">
-            <td th:if="${bill.deleted}"><s th:text="${bill.billNumber + ' '}"></s>CANCELED</td>
+            <td th:if="${bill.deleted}"><s th:text="${bill.billNumber + ' '}"></s></td>
             <td th:unless="${bill.deleted}" th:text="${bill.billNumber}"></td>
             <td th:text="${bill.name}"></td>
             <td th:text="${bill.user.firstName + ' ' + bill.user.lastName}"></td>
@@ -50,7 +51,9 @@
             <td th:text="${bill.price + ',-'}"></td>
             <td th:text="${bill.vat + ',-'}"></td>
             <td th:text="${bill.totalPrice + ',-'}"></td>
-            <td><a th:href="@{/}">Show</a></td>
+            <td th:if="${bill.isPaid}"><span>&#10003;</span></td>
+            <td th:unless="${bill.isPaid}"><span>&#10008;</span></td>
+            <td><a th:href="@{/bills/} + ${bill.id}">Show</a></td>
             <td>
                 <form action="#" th:action="@{/bills}" method="post">
                     <input type="hidden" th:value="${bill.id}" th:name="billId">

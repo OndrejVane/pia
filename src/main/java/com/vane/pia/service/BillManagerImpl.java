@@ -3,6 +3,7 @@ package com.vane.pia.service;
 import com.vane.pia.dao.*;
 import com.vane.pia.domain.*;
 import com.vane.pia.exception.BillNotFoundException;
+import com.vane.pia.exception.UserNotFoundException;
 import com.vane.pia.model.WebCredentials;
 import com.vane.pia.utils.Calculator;
 import com.vane.pia.utils.generator.Generator;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -63,7 +63,7 @@ public class BillManagerImpl implements BillManager {
     @Override
     public Bill getBillById(Long id) {
         Optional<Bill> result = this.billRepository.findById(id);
-        if (result.isEmpty() || result.get().isDeleted()) {
+        if (result.isEmpty()) {
             log.error("Bill not found");
             throw new BillNotFoundException(id);
         }
@@ -110,6 +110,34 @@ public class BillManagerImpl implements BillManager {
         }
         bill.setDeleted(true);
         this.billRepository.save(bill);
+    }
+
+    @Override
+    public void updateBill(Bill bill, Long billId) {
+        Optional<Bill> foundBill = this.billRepository.findById(billId);
+        if(foundBill.isEmpty()){
+            throw new BillNotFoundException(billId);
+        }
+
+        Optional<User> foundUser = this.userRepository.findById(getCurrentUser().getId());
+        if(foundUser.isEmpty()){
+            throw  new UserNotFoundException(getCurrentUser().getId());
+        }
+
+        Bill dbBill = foundBill.get();
+        dbBill.setName(bill.getName());
+        dbBill.setDescription(bill.getDescription());
+        dbBill.setContact(bill.getContact());
+        dbBill.setIssuedDate(bill.getIssuedDate());
+        dbBill.setDueDate(bill.getDueDate());
+        dbBill.setIsAccepted(bill.getIsAccepted());
+        dbBill.setIsCash(bill.getIsCash());
+        dbBill.setIsPaid(bill.getIsPaid());
+        dbBill.setDeleted(bill.isDeleted());
+        dbBill.setUser(foundUser.get());
+
+        this.billRepository.save(dbBill);
+
     }
 
     @Override

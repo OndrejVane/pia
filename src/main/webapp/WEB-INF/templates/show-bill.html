@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{app.welcome}"></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/billForm.css}"/>
+
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
+
+<!-- Content of the page -->
+<div id="content-wrap">
+    <h1>Bill details</h1>
+    <p th:if="${param.success}" class="success">Bill has been updated</p>
+    <form th:object="${bill}">
+        <div class="form-container">
+            <h3 th:if="*{isAccepted}" th:text="${'Buyer'}"></h3>
+            <h3 th:unless="*{isAccepted}" th:text="${'Seller'}"></h3>
+            <table>
+                <tr>
+                    <td th:text="'Name:'"></td>
+                    <td><input type="text" th:field="*{company.name}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Street:'"></td>
+                    <td><input type="text" th:field="*{company.street}" disabled/></td>
+                <tr>
+                    <td th:text="'House number:'"></td>
+                    <td><input type="text" th:field="*{company.houseNumber}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'City:'"></td>
+                    <td><input type="text" th:field="*{company.city}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Zip code:'"></td>
+                    <td><input type="text" th:field="*{company.zipCode}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'IN:'"></td>
+                    <td><input type="text" th:field="*{company.identificationNumber}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'TIN:'"></td>
+                    <td><input type="text" th:field="*{company.taxIdentificationNumber}" disabled/></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <form th:object="${bill}">
+        <div class="form-container">
+            <h3 th:if="*{isAccepted}" th:text="${'Seller'}"></h3>
+            <h3 th:unless="*{isAccepted}" th:text="${'Buyer'}"></h3>
+            <table>
+                <tr>
+                    <td th:text="'Name:'"></td>
+                    <td><input type="text" th:field="*{contact.name}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Street:'"></td>
+                    <td><input type="text" th:field="*{contact.street}" disabled/></td>
+                <tr>
+                    <td th:text="'House number:'"></td>
+                    <td><input type="text" th:field="*{contact.houseNumber}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'City:'"></td>
+                    <td><input type="text" th:field="*{contact.city}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Zip code:'"></td>
+                    <td><input type="text" th:field="*{contact.zipCode}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'IN:'"></td>
+                    <td><input type="text" th:field="*{contact.identificationNumber}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'TIN:'"></td>
+                    <td><input type="text" th:field="*{contact.taxIdentificationNumber}" disabled/></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <form th:object="${bill}" class="wide">
+        <div class="form-container">
+            <h3 th:text="'Basic information'"></h3>
+            <table>
+                <tr>
+                    <td th:text="'Bill number:'"></td>
+                    <td><input type="text" th:field="*{billNumber}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Name:'"></td>
+                    <td><input type="text" th:field="*{name}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Description:'"></td>
+                    <td><input type="text" th:field="*{description}" disabled/></td>
+                <tr>
+                    <td th:text="'Issued Time:'"></td>
+                    <td><input type="date" th:field="*{issuedDate}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Due Time:'"></td>
+                    <td><input type="date" th:field="*{dueDate}" disabled/></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <td th:text="'Is accepted:'"></td>
+                    <td><input type="checkbox" th:field="*{isAccepted}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Is cash:'"></td>
+                    <td><input type="checkbox" th:field="*{isCash}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Is paid:'"></td>
+                    <td><input type="checkbox" th:field="*{isPaid}" disabled/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Is canceled:'"></td>
+                    <td><input type="checkbox" th:field="*{deleted}" disabled/></td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <div class="form-container-wide">
+        <h3>Items</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Count</th>
+                <th>VAT[%]</th>
+                <th>VAT[Kč]</th>
+                <th>Total</th>
+            </tr>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.description}"></td>
+                <td th:text="${item.price + ',-'}"></td>
+                <td th:text="${item.count}"></td>
+                <td th:text="${item.vatPercentage + '%'}"></td>
+                <td th:text="${item.vatAmount + ',-'}"></td>
+                <td th:text="${item.totalPrice + ',-'}"></td>
+            </tr>
+            <tr>
+                <td><b>Total</b></td>
+                <td></td>
+                <td><b th:text="${bill.price + ',-'}"></b></td>
+                <td></td>
+                <td></td>
+                <td><b th:text="${bill.vat + ',-'}"></b></td>
+                <td><b th:text="${bill.totalPrice + ',-'}"></b></td>
+            </tr>
+        </table>
+    </div>
+
+    <div>
+        <form sec:authorize="hasRole('ACCOUNTANT')" action="#" th:action="@{/bills/} + ${bill.id} + ${'/edit'}" method="get">
+            <button type="submit" class="button">Edit bill</button>
+        </form>
+    </div>
+</div>
+<!-- Content of the page -->
+
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+</body>
+</html>
