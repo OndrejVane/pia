@@ -199,11 +199,11 @@ public class BillManagerImpl implements BillManager {
             Company company = companyRepository.findAll().iterator().next();
 
             log.info("Creating Bill 1 and Bill 2 for contact 1");
-            Contact contact1 = contactRepository.findByName("Contact 1");
+            Contact contact1 = contactRepository.findByName("Alza.cz a.s.");
             User user1 = userRepository.findByUsername("qwer3333");
             Bill newBill = new Bill("Bill 1",
-                    "Prodej nějakého zboží",
-                    false,
+                    "Nákup a montáž počítaču",
+                    true,
                     LocalDate.now(),
                     LocalDate.now().plusDays(10),
                     true,
@@ -214,7 +214,7 @@ public class BillManagerImpl implements BillManager {
             this.addSimpleBill(newBill);
 
             Bill bill2 = new Bill("Bill 2",
-                    "Nákup nějakého zboží",
+                    "Nákup softwaru",
                     true,
                     LocalDate.now(),
                     LocalDate.now().plusDays(15),
@@ -226,10 +226,10 @@ public class BillManagerImpl implements BillManager {
             this.addSimpleBill(bill2);
 
             log.info("Creating Bill 3 and Bill 4 for contact 2");
-            Contact contact2 = contactRepository.findByName("Contact 2");
+            Contact contact2 = contactRepository.findByName("CZC.cz s.r.o.");
             User user2 = userRepository.findByUsername("qwer2222");
             Bill bill3 = new Bill("Bill 3",
-                    "Nákup nějakého zboží",
+                    "Nákup zásuvek",
                     true,
                     LocalDate.now(),
                     LocalDate.now().plusDays(15),
@@ -241,8 +241,8 @@ public class BillManagerImpl implements BillManager {
             this.addSimpleBill(bill3);
 
             Bill bill4 = new Bill("Bill 4",
-                    "Nákup nějakého zboží",
-                    true,
+                    "Prodej softwaru",
+                    false,
                     LocalDate.now(),
                     LocalDate.now().plusDays(15),
                     false,
@@ -254,10 +254,10 @@ public class BillManagerImpl implements BillManager {
 
 
             log.info("Creating Bill 5 and Bill 6 for contact 2");
-            Contact contact3 = contactRepository.findByName("Contact 3");
+            Contact contact3 = contactRepository.findByName("ELFETEX, spol. s r.o.");
             User user3 = userRepository.findByUsername("qwer1111");
             Bill bill5 = new Bill("Bill 5",
-                    "Nákup nějakého zboží",
+                    "Nákup zásuvek",
                     true,
                     LocalDate.now(),
                     LocalDate.now().plusDays(15),
@@ -266,10 +266,11 @@ public class BillManagerImpl implements BillManager {
             bill5.setCompany(company);
             bill5.setContact(contact3);
             bill5.setUser(user3);
+            bill5.setDeleted(true);
             this.addSimpleBill(bill5);
 
             Bill bill6 = new Bill("Bill 6",
-                    "Nákup nějakého zboží",
+                    "Nákup kabelů",
                     true,
                     LocalDate.now(),
                     LocalDate.now().plusDays(15),

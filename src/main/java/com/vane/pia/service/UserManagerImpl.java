@@ -68,7 +68,7 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     public List<User> getUsers() {
         List<User> retVal = new LinkedList<>();
         for (User user : this.userRepository.findAll()) {
-            if(!user.isDeleted()){
+            if (!user.isDeleted()) {
                 retVal.add(user);
             }
         }
@@ -146,8 +146,8 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             Company company = companyRepository.findAll().iterator().next();
 
             log.info("No admin present, creating admin.");
-            User newAdmin = new User(ADMIN_USER_NAME, DEFAULT_PASSWORD, "admin", "admin", "123456789", "Ing.", "Street",
-                    "City", "123", "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
+            User newAdmin = new User(ADMIN_USER_NAME, DEFAULT_PASSWORD, "Pan", "Administrátor", "123456789", "Ing.", "Street",
+                    "Plzeň", "123", "31000", "pan.admin@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
                     , "5500");
             this.addUser(newAdmin);
             User admin = this.userRepository.findByUsername(ADMIN_USER_NAME);
@@ -157,16 +157,16 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             this.userRepository.save(admin);
 
             log.info("No user present, creating user.");
-            User newUser = new User(USER_NAME, DEFAULT_PASSWORD, "user", "user", "123456789", "Ing.", "Street",
-                    "City", "123", "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
+            User newUser = new User(USER_NAME, DEFAULT_PASSWORD, "Pan", "Uživatel", "123456789", "Ing.", "Street",
+                    "City", "123", "25219", "pan.user@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
                     , "5500");
             newUser.setUsername(USER_NAME);
             newUser.getCompanies().add(company);
             this.addUser(newUser);
 
             log.info("No accountant present, creating accountant.");
-            User newAccountant = new User(ACCOUNTANT_NAME, DEFAULT_PASSWORD, "accountant", "accountant", "123456789", "Ing.", "Street",
-                    "City", "123", "25219", "Vane1@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
+            User newAccountant = new User(ACCOUNTANT_NAME, DEFAULT_PASSWORD, "Paní", "Účetní", "123456789", "Ing.", "Street",
+                    "City", "123", "25219", "pan.accountant@seznam.cz", "+420123456789", "1234567890123456", "1234567890123456"
                     , "5500");
             this.addUser(newAccountant);
             User accountant = this.userRepository.findByUsername(ACCOUNTANT_NAME);

@@ -49,45 +49,45 @@ public class ItemManagerImpl implements ItemManager {
             Bill bill6 = this.billRepository.findByName("Bill 6");
 
 
-            Item item1 = new Item("Item 1", "Description", 100f, 3f, 21);
+            Item item1 = new Item("Item 1", "Klávesnice", 100f, 3f, 21);
             item1.setBill(bill1);
             items.add(item1);
             this.addItem(item1);
 
 
-            Item item2 = new Item("Item 2", "Description", 120f, 9f, 15);
+            Item item2 = new Item("Item 2", "Monitor", 120f, 9f, 15);
             item2.setBill(bill1);
             items.add(item2);
 
-            Item item3 = new Item("Item 3", "Description", 10f, 1f, 10);
+            Item item3 = new Item("Item 3", "Hard disk", 10f, 1f, 10);
             item3.setBill(bill1);
             items.add(item3);
 
-            Item item4 = new Item("Item 4", "Description", 1000f, 1f, 10);
+            Item item4 = new Item("Item 4", "Počítač", 1000f, 1f, 10);
             item4.setBill(bill1);
             items.add(item4);
 
-            Item item5 = new Item("Item 5", "Description", 1000f, 1f, 10);
+            Item item5 = new Item("Item 5", "Ms office 365", 1000f, 1f, 10);
             item5.setBill(bill2);
             items.add(item5);
 
-            Item item6 = new Item("Item 6", "Description", 1000f, 1f, 10);
+            Item item6 = new Item("Item 6", "MS Windows 10", 1000f, 1f, 10);
             item6.setBill(bill2);
             items.add(item6);
 
-            Item item7 = new Item("Item 7", "Description", 1000f, 1f, 10);
+            Item item7 = new Item("Item 7", "Zásuvka", 1000f, 1f, 10);
             item7.setBill(bill3);
             items.add(item7);
 
-            Item item8 = new Item("Item 8", "Description", 1000f, 1f, 10);
+            Item item8 = new Item("Item 8", "Můj boží software", 1000f, 1f, 10);
             item8.setBill(bill4);
             items.add(item8);
 
-            Item item9 = new Item("Item 9", "Description", 1000f, 1f, 10);
+            Item item9 = new Item("Item 9", "Zásuvka", 1000f, 1f, 10);
             item9.setBill(bill5);
             items.add(item9);
 
-            Item item10 = new Item("Item 10", "Description", 1000f, 1f, 10);
+            Item item10 = new Item("Item 10", "CYKY 2.5 Cu", 1000f, 1f, 10);
             item10.setBill(bill6);
             items.add(item10);
 

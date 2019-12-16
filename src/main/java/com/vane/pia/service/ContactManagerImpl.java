@@ -41,43 +41,41 @@ public class ContactManagerImpl implements ContactManager {
             Company company = companyRepository.findAll().iterator().next();
 
             log.info("Creating contact 1");
-            //Contact contact1 = new Contact("Contact 1");
-            Contact contact1 = new Contact("Contact 1",
-                    "Masarykova",
-                    "747",
-                    "Rudná",
-                    "25219",
-                    "35301816",
-                    "1234567890123456",
+            Contact contact1 = new Contact("Alza.cz a.s.",
+                    "Jankovcova",
+                    "1522/53",
+                    "Praha 7 - Holešovice",
+                    "17000",
+                    "27082440",
+                    "CZ27082440",
+                    "1265098001",
                     "5500");
             contact1.setCompany(company);
             this.addContact(contact1);
 
             log.info("Creating contact 2");
-            //Contact contact2 = new Contact("Contact 2");
-            Contact contact2 = new Contact("Contact 2",
-                    "Borská",
-                    "234",
-                    "Plzeň",
-                    "30100",
-                    "35301098",
-                    "CZ25201789",
-                    "1234567890123456",
-                    "5500");
+            Contact contact2 = new Contact("CZC.cz s.r.o.",
+                    "U Garáží",
+                    "1611/1",
+                    "Praha - Holešovice",
+                    "17000",
+                    "25655701",
+                    "CZ25655701",
+                    "0117766173",
+                    "0300");
             contact2.setCompany(company);
             this.addContact(contact2);
 
             log.info("Creating contact 3");
-            //Contact contact3 = new Contact("Contact 3");
-            Contact contact3 = new Contact("Contact 3",
-                    "Němejcova",
-                    "1204/6",
+            Contact contact3 = new Contact("ELFETEX, spol. s r.o.",
+                    "Hřbitovní",
+                    "31a",
                     "Plzeň",
-                    "30100",
-                    "35301198",
-                    "cz25201489",
-                    "1234567890123456",
-                    "5500");
+                    "31216",
+                    "40524485",
+                    "CZ40524485",
+                    "10004371",
+                    "0100");
             contact3.setCompany(company);
             this.addContact(contact3);
         }

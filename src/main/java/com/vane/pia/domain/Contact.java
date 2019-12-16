@@ -43,7 +43,7 @@ public class Contact extends EntityParent{
     private String taxIdentificationNumber;
 
     @NotNull
-    @Pattern(regexp = "[0-9]{16}")
+    @Pattern(regexp = "[0-9]{6,16}")
     private String accountNumber;
 
     @NotNull
