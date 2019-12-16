@@ -1,8 +1,9 @@
-# pia
+# How run application in docker
 
-* [Thymeleaf & Spring](https://github.com/thymeleaf/thymeleafexamples-stsm)
-* [Spring Project Generator](https://start.spring.io/)
 
-## JPA + Lazy
+## Default users in application
 
-[How to load lazy fetched items from Hibernate/JPA in my controller](https://stackoverflow.com/questions/15359306/how-to-load-lazy-fetched-items-from-hibernate-jpa-in-my-controller)
+1) qwer1111 role: ADMIN pw: 1234
+2) qwer2222 role: no role pw: 1234
+3) qwer3333 role: ACCOUNTANT pw: 1234
+
