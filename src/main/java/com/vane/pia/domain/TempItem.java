@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class Item extends EntityParent {
+public class TempItem extends EntityParent {
 
     @NotNull
     private String name;
@@ -31,8 +31,6 @@ public class Item extends EntityParent {
     @NotNull
     private Integer vatPercentage;
 
-    @NotNull
-    private boolean isDeleted;
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
@@ -49,25 +47,32 @@ public class Item extends EntityParent {
     // End - Calculated field
 
     @ManyToOne
-    @JoinColumn(name = "fk_bill")
-    private Bill bill;
+    @JoinColumn(name = "fk_user")
+    private User user;
 
-    public Item() {
-        this.isDeleted = false;
+    public TempItem() {
     }
 
-    public Item(@NotNull String name,
-                String description,
-                @NotNull Float price,
-                @NotNull Float count,
-                @NotNull Integer vatPercentage) {
+    public TempItem(@NotNull Float price,
+                    Float vatAmount,
+                    Float totalPrice) {
+        this.price = price;
+        this.vatAmount = vatAmount;
+        this.totalPrice = totalPrice;
+    }
+
+    public TempItem(@NotNull String name,
+                    String description,
+                    @NotNull Float price,
+                    @NotNull Float count,
+                    @NotNull Integer vatPercentage) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.count = count;
         this.vatPercentage = vatPercentage;
-        this.isDeleted = false;
     }
 
 
 }
+

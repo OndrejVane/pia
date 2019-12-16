@@ -77,6 +77,9 @@ public class User extends EntityParent {
     @OneToMany(mappedBy = "user")
     private List<Bill> bills = new LinkedList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<TempItem> tempItems = new LinkedList<>();
+
     @ManyToMany
     @JoinTable(
             joinColumns = @JoinColumn(name = "user_id"),

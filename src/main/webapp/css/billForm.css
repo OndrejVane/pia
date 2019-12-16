@@ -1,0 +1,83 @@
+form {
+    width: 46%;
+    margin-left: 2%;
+    display: inline-block;
+
+}
+
+.form-container {
+    border-radius: 15px;
+    border: 2px solid var(--green);
+    padding: 1%;
+    width: 100%;
+    display: inline-block;
+    background-color: var(--white);
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
+    height: 230px;
+}
+
+.form-container-wide {
+    border-radius: 15px;
+    border: 2px solid var(--green);
+    padding: 1%;
+    width: 95%;
+    display: inline-block;
+    background-color: var(--white);
+    margin-bottom: 10px;
+    margin-right: 5px;
+    margin-left: 2%;
+    height: auto;
+}
+
+.form-container-wide table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.form-container-wide td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+.form-container-wide tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+
+h3 {
+    padding: 0;
+    margin: 0 0 10px;
+}
+
+h1 {
+    margin-left: 2%;
+}
+
+h2 {
+    margin-left: 2%;
+}
+
+.form-buttons {
+    width: 100%;
+}
+
+/* Mobile view*/
+@media screen and (max-width: 600px) {
+    .form-container {
+        display: block;
+        width: 90%;
+        alignment: center;
+        margin: auto auto 10px;
+    }
+
+    form {
+        width: 100%;
+        margin-left: 2%;
+    }
+}
+
+

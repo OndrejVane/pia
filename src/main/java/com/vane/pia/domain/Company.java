@@ -100,4 +100,9 @@ public class Company extends EntityParent {
         this.accountNumber = accountNumber;
         this.bankNumber = bankNumber;
     }
+
+    @Override
+    public String toString(){
+        return "Company";
+    }
 }

@@ -115,4 +115,9 @@ public class Contact extends EntityParent{
         return this.street + " " + this.houseNumber + "," +
                 this.city + " " + this.zipCode;
     }
+
+    @Override
+    public String toString(){
+        return "Contact";
+    }
 }

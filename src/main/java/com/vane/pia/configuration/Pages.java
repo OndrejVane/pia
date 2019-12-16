@@ -20,6 +20,7 @@ public class Pages {
     public static final String CONTACT_PAGE = "/contacts/{contactId}";
     public static final String ADD_CONTACT_PAGE = "/contacts/add";
     public static final String COMPANY_PAGE = "/company";
+    public static final String ADD_BILL_ITEM_PAGE = "/bills/add/item";
 
     // html templates
     public static final String HOME_PAGE_TEMPLATE = "index";
@@ -32,6 +33,7 @@ public class Pages {
     public static final String EDIT_CONTACT_TEMPLATE = "edit-contact";
     public static final String ADD_CONTACT_TEMPLATE = "add-contact";
     public static final String COMPANY_TEMPLATE = "company";
+    public static final String ADD_ITEMS_TEMPLATE = "add-bill";
 
     // pages with error
     public static final String ERROR_ADD_USER_PAGE = ADD_USER_PAGE + ERROR;

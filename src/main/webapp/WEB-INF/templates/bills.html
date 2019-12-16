@@ -21,6 +21,7 @@
 <!-- Content of the page -->
 <div id="content-wrap">
     <h1 th:text="#{bills}"></h1>
+    <p th:if="${param.success}" class="success">Bill created</p>
     <div class="form-buttons">
         <button class="button-small"><a th:href="@{/bills}">All</a></button>
         <button class="button-small"><a th:href="@{/bills-accepted}">Accepted</a></button>
@@ -61,7 +62,7 @@
     </table>
 
     <div>
-        <form action="" method="get">
+        <form action="#" th:action="@{/bills/add/item}" method="get">
             <button type="submit" class="button">Add new bill</button>
         </form>
     </div>

@@ -4,9 +4,11 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -21,6 +23,7 @@ public class Bill extends EntityParent {
     private String name;
 
 
+    @NotNull
     private String description;
 
     // je přijatá
@@ -29,15 +32,20 @@ public class Bill extends EntityParent {
 
     // datum vystavění faktury
     @NotNull
-    private LocalDateTime issuedDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate issuedDate;
 
     // datum splatnosti
     @NotNull
-    private LocalDateTime dueDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dueDate;
 
     // hotově
     @NotNull
     private Boolean isCash;
+
+    @NotNull
+    private Boolean isPaid;
 
     // Start - Calculated field
     @Column(unique = true)
@@ -59,7 +67,6 @@ public class Bill extends EntityParent {
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_company")
     private Company company;
@@ -82,11 +89,12 @@ public class Bill extends EntityParent {
     }
 
     public Bill(@NotNull String name,
-                String description,
+                @NotNull String description,
                 @NotNull Boolean isAccepted,
-                @NotNull LocalDateTime issuedDate,
-                @NotNull LocalDateTime dueDate,
-                @NotNull Boolean isCash) {
+                @NotNull LocalDate issuedDate,
+                @NotNull LocalDate dueDate,
+                @NotNull Boolean isCash,
+                @NotNull Boolean isPaid) {
         this.name = name;
         this.description = description;
         this.isAccepted = isAccepted;
@@ -94,6 +102,7 @@ public class Bill extends EntityParent {
         this.dueDate = dueDate;
         this.isCash = isCash;
         this.isDeleted = false;
+        this.isPaid = isPaid;
     }
 
     public String getIssuedCzDate() {
@@ -104,5 +113,10 @@ public class Bill extends EntityParent {
     public String getDueCzDate() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return dueDate.format(formatter);
+    }
+
+    @Override
+    public String toString(){
+        return "Bill";
     }
 }

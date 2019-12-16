@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -30,18 +31,21 @@ public class BillManagerImpl implements BillManager {
     private final ContactRepository contactRepository;
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
+    private final TempItemRepository tempItemRepository;
 
     @Autowired
     public BillManagerImpl(BillRepository billRepository,
                            CompanyRepository companyRepository,
                            ContactRepository contactRepository,
                            ItemRepository itemRepository,
-                           UserRepository userRepository) {
+                           UserRepository userRepository,
+                           TempItemRepository tempItemRepository) {
         this.billRepository = billRepository;
         this.companyRepository = companyRepository;
         this.contactRepository = contactRepository;
         this.itemRepository = itemRepository;
         this.userRepository = userRepository;
+        this.tempItemRepository = tempItemRepository;
     }
 
     @Override
@@ -109,7 +113,36 @@ public class BillManagerImpl implements BillManager {
     }
 
     @Override
+    @Transactional
     public void addBill(Bill bill) {
+        if (bill.getUser() == null) {
+            bill.setUser(getCurrentUser());
+        }
+
+        // get number of bill from company
+        Company company = this.companyRepository.findAll().iterator().next();
+        String billNumber = Generator.generateBillNumber(company.getNumberOfBills() + 1, bill.getIsAccepted());
+        bill.setBillNumber(billNumber);
+        bill.setCompany(company);
+
+        billRepository.save(bill);
+
+        // remove all temporary items
+        tempItemRepository.deleteAllByUserId(getCurrentUser().getId());
+
+        // increment number of bills in company counter
+        company.setNumberOfBills(company.getNumberOfBills() + 1);
+        this.companyRepository.save(company);
+
+        // store all bill items
+        Bill storedBill = this.billRepository.findByBillNumber(billNumber);
+        for (Item item : bill.getItems()){
+            item.setBill(storedBill);
+            this.itemRepository.save(item);
+        }
+    }
+
+    private void addSimpleBill(Bill bill){
         if (bill.getUser() == null) {
             bill.setUser(getCurrentUser());
         }
@@ -143,24 +176,26 @@ public class BillManagerImpl implements BillManager {
             Bill newBill = new Bill("Bill 1",
                     "Prodej nějakého zboží",
                     false,
-                    LocalDateTime.now(),
-                    LocalDateTime.now().plusDays(10),
-                    true);
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(10),
+                    true,
+                    false);
             newBill.setCompany(company);
             newBill.setContact(contact1);
             newBill.setUser(user1);
-            this.addBill(newBill);
+            this.addSimpleBill(newBill);
 
             Bill bill2 = new Bill("Bill 2",
                     "Nákup nějakého zboží",
                     true,
-                    LocalDateTime.now(),
-                    LocalDateTime.now().plusDays(15),
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(15),
+                    false,
                     false);
             bill2.setCompany(company);
             bill2.setContact(contact1);
             bill2.setUser(user1);
-            this.addBill(bill2);
+            this.addSimpleBill(bill2);
 
             log.info("Creating Bill 3 and Bill 4 for contact 2");
             Contact contact2 = contactRepository.findByName("Contact 2");
@@ -168,24 +203,26 @@ public class BillManagerImpl implements BillManager {
             Bill bill3 = new Bill("Bill 3",
                     "Nákup nějakého zboží",
                     true,
-                    LocalDateTime.now(),
-                    LocalDateTime.now().plusDays(15),
-                    false);
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(15),
+                    false,
+                    true);
             bill3.setCompany(company);
             bill3.setContact(contact2);
             bill3.setUser(user2);
-            this.addBill(bill3);
+            this.addSimpleBill(bill3);
 
             Bill bill4 = new Bill("Bill 4",
                     "Nákup nějakého zboží",
                     true,
-                    LocalDateTime.now(),
-                    LocalDateTime.now().plusDays(15),
-                    false);
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(15),
+                    false,
+                    true);
             bill4.setCompany(company);
             bill4.setContact(contact2);
             bill4.setUser(user2);
-            this.addBill(bill4);
+            this.addSimpleBill(bill4);
 
 
             log.info("Creating Bill 5 and Bill 6 for contact 2");
@@ -194,24 +231,26 @@ public class BillManagerImpl implements BillManager {
             Bill bill5 = new Bill("Bill 5",
                     "Nákup nějakého zboží",
                     true,
-                    LocalDateTime.now(),
-                    LocalDateTime.now().plusDays(15),
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(15),
+                    false,
                     false);
             bill5.setCompany(company);
             bill5.setContact(contact3);
             bill5.setUser(user3);
-            this.addBill(bill5);
+            this.addSimpleBill(bill5);
 
             Bill bill6 = new Bill("Bill 6",
                     "Nákup nějakého zboží",
                     true,
-                    LocalDateTime.now(),
-                    LocalDateTime.now().plusDays(15),
-                    false);
+                    LocalDate.now(),
+                    LocalDate.now().plusDays(15),
+                    false,
+                    true);
             bill6.setCompany(company);
             bill6.setContact(contact3);
             bill6.setUser(user3);
-            this.addBill(bill6);
+            this.addSimpleBill(bill6);
         }
 
     }

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title th:text="#{app.name} + #{title.delimiter} + #{app.welcome}"></title>
+
+    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/globalView.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/billForm.css}"/>
+
+</head>
+<body>
+<!-- Navigation bar imported -->
+<div th:replace="fragments/navbar :: navBar"></div>
+<!-- ./Navigation bar imported -->
+
+<!-- Content of the page -->
+<div id="content-wrap">
+    <h1>Create new bill</h1>
+    <p th:if="${param.error}" class="error">Bill should have one item at least</p>
+    <form action="#" th:action="@{/bills/add/item}" th:object="${tempItem}" method="post">
+        <div class="form-container" id="bill-form-1">
+        <h3 th:text="'Add item to bill'"></h3>
+        <table>
+            <tr>
+                <td th:text="'Name:*'"></td>
+                <td><input type="text" th:field="*{name}"/></td>
+                <td class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+            </tr>
+            <tr>
+                <td th:text="'Description:'"></td>
+                <td><input type="text" th:field="*{description}"/></td>
+                <td class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
+            </tr>
+            <tr>
+                <td th:text="'Price:*'"></td>
+                <td><input type="number" step="0.01" min="0" th:field="*{price}"/></td>
+                <td class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></td>
+            </tr>
+            <tr>
+                <td th:text="'Count:*'"></td>
+                <td><input type="number" step="0.01" min="0" th:field="*{count}"/></td>
+                <td class="error" th:if="${#fields.hasErrors('count')}" th:errors="*{count}"></td>
+            </tr>
+            <tr>
+                <td th:text="'VAT[%]:*'"></td>
+                <td><input type="number" min="0" max="21" th:field="*{vatPercentage}"/></td>
+                <td class="error" th:if="${#fields.hasErrors('vatPercentage')}" th:errors="*{vatPercentage}"></td>
+            </tr>
+
+        </table>
+        </div>
+        <div class="form-buttons">
+            <small>* information has to be filled</small><br>
+            <button type="submit" class="button">Add item</button>
+        </div>
+        </form>
+    <form action="#" th:action="@{/bills/add/bill}" th:object="${bill}" method="post">
+        <div class="form-container" id="bill-form-2">
+            <h3 th:text="'Basic information'"></h3>
+            <table>
+                <tr>
+                    <td th:text="'Name:*'"></td>
+                    <td><input type="text" th:field="*{name}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></td>
+                </tr>
+                <tr>
+                <td th:text="'Description:*'"></td>
+                <td><input type="text" th:field="*{description}"/></td>
+                <td class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></td>
+                <tr>
+                    <td th:text="'Contact:*'"></td>
+                    <td>
+                        <select th:field="*{contact}">
+                            <option th:each="contact : ${contacts}"
+                                    th:value="${contact.id}"
+                                    th:text="${contact.name + ', IČO:' + contact.identificationNumber}">
+                            </option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td th:text="'Issued Time:*'"></td>
+                    <td><input type="date" th:field="*{issuedDate}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('issuedDate')}" th:errors="*{issuedDate}"></td>
+                </tr>
+                <tr>
+                    <td th:text="'Due Time:*'"></td>
+                    <td><input type="date" th:field="*{dueDate}"/></td>
+                    <td class="error" th:if="${#fields.hasErrors('dueDate')}" th:errors="*{dueDate}"></td>
+                </tr>
+                <tr>
+                    <td th:text="'Is accepted:*'"></td>
+                    <td><input type="checkbox" th:field="*{isAccepted}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Is cash:*'"></td>
+                    <td><input type="checkbox" th:field="*{isCash}"/></td>
+                </tr>
+                <tr>
+                    <td th:text="'Is paid:*'"></td>
+                    <td><input type="checkbox" th:field="*{isPaid}"/></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="form-buttons">
+            <small>* information has to be filled</small><br>
+            <button type="submit" class="button">Add bill</button>
+        </div>
+    </form>
+    <div class="form-container-wide">
+        <h3>Items</h3>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Count</th>
+                <th>VAT[%]</th>
+                <th>VAT[Kč]</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+            <tr th:each="item : ${items}">
+                <td th:text="${item.name}"></td>
+                <td th:text="${item.description}"></td>
+                <td th:text="${item.price + ',-'}"></td>
+                <td th:text="${item.count}"></td>
+                <td th:text="${item.vatPercentage + '%'}"></td>
+                <td th:text="${item.vatAmount + ',-'}"></td>
+                <td th:text="${item.totalPrice + ',-'}"></td>
+                <td>
+                    <form action="#" th:action="@{/bills/add/item/} + ${item.id}" method="post">
+                        <input type="hidden" th:value="${item.id}" th:name="tempItemId">
+                        <button onclick="return confirm('Do you really want to delete this bill item?');" type="submit">X</button>
+                    </form>
+                </td>
+
+            </tr>
+            <tr>
+                <td><b>Total</b></td>
+                <td></td>
+                <td><b th:text="${total.price + ',-'}"></b></td>
+                <td></td>
+                <td></td>
+                <td><b th:text="${total.vatAmount + ',-'}"></b></td>
+                <td><b th:text="${total.totalPrice + ',-'}"></b></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- Content of the page -->
+
+
+<!-- Footer imported -->
+<div th:replace="fragments/footer :: footer"></div>
+<!-- ./Footer imported -->
+</body>
+</html>
