@@ -3,7 +3,7 @@
 
 ## Default users in application
 
-1) qwer1111 role: ADMIN pw: 1234
-2) qwer2222 role: no role pw: 1234
-3) qwer3333 role: ACCOUNTANT pw: 1234
+1) username: qwer1111 pw: 1234 role: ADMIN 
+2) username: qwer2222 pw: 1234 role: --
+3) username: qwer3333 pw: 1234 role: ACCOUNTANT
 
