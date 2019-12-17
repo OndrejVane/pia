@@ -45,25 +45,19 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     // normal accountant
     private static final String ACCOUNTANT_NAME = "qwer3333";
 
-    private final PasswordEncoder encoder;
+    @Autowired
+    private PasswordEncoder encoder;
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final CompanyRepository companyRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Autowired
     private MailService mailService;
 
-    @Autowired
-    public UserManagerImpl(PasswordEncoder encoder,
-                           UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           CompanyRepository companyRepository) {
-        this.encoder = encoder;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.companyRepository = companyRepository;
-    }
 
     @Override
     public List<User> getUsers() {
