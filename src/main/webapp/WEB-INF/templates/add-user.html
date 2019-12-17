@@ -131,6 +131,9 @@
             </ul>
         </div>
         <div class="form-buttons">
+            <input type="checkbox" th:field="*{sendEmail}">
+            <label>Send email notification with credentials to new user</label>
+            <br><br>
             <small>* information has to be filled</small><br>
             <button type="submit" class="button">Add user</button>
             <button type="reset" class="button">Clear form</button>

@@ -37,7 +37,7 @@ public class MailSenderImpl implements MailService {
         String textMessage = "Dear " + toUser.getFirstName() +
                 " " + toUser.getLastName() + ",\n" +
                 "you have been successfully register in web application PIA\n" +
-                "for managing your bills. You can now log in HERE with credentials:\n" +
+                "for managing your bills. You can now log in HERE(localhost:8080 :D) with credentials:\n" +
                 "Username: " + toUser.getUsername() + "\n" +
                 "Password: " + toUser.getPassword() + "\n\n" +
                 "After login you can change your password in user settings.\n\n" +

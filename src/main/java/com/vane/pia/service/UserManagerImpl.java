@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
@@ -82,8 +83,11 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
             return false;
         }
 
-        // send mail async
-        //CompletableFuture.runAsync(() -> mailService.sendRegistrationMail(user));
+        if(user.isSendEmail()){
+            // send mail async
+            CompletableFuture.runAsync(() -> mailService.sendRegistrationMail(user));
+            log.info("Sending notification email to " + user.getEmail());
+        }
 
         // set company to user
         user.getCompanies().add(this.companyRepository.findAll().iterator().next());

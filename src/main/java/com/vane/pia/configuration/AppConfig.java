@@ -132,8 +132,8 @@ public class AppConfig extends WebSecurityConfigurerAdapter implements WebMvcCon
         mailSender.setHost("smtp.gmail.com");
         mailSender.setPort(587);
 
-        mailSender.setUsername("mial@gmail.com");
-        mailSender.setPassword("password");
+        mailSender.setUsername("pianotificator@gmail.com");
+        mailSender.setPassword("piapiapia");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

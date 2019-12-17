@@ -68,6 +68,9 @@ public class User extends EntityParent {
     @NotNull
     private boolean isDeleted;
 
+    @NotNull
+    private boolean sendEmail;
+
     @CreationTimestamp
     private LocalDateTime createDateTime;
 
@@ -98,6 +101,7 @@ public class User extends EntityParent {
         this.setUsername(username);
         this.setPassword(password);
         this.isDeleted = false;
+        this.sendEmail = false;
     }
 
     public User(@NotNull String username, @NotNull String password, @NotNull String firstName, @NotNull String lastName,
@@ -124,12 +128,14 @@ public class User extends EntityParent {
         this.accountNumber = accountNumber;
         this.bankNumber = bankNumber;
         this.isDeleted = false;
+        this.sendEmail = false;
     }
 
     public User() {
         this.setPassword(Generator.generatePassword());
         this.setUsername(Generator.generateUsername());
         this.isDeleted = false;
+        this.sendEmail = false;
     }
 
     public String getAddress() {
