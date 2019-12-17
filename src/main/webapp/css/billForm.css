@@ -37,6 +37,10 @@ form {
     width: 100%;
 }
 
+input[type="text"]{
+    width: 150px;
+}
+
 .form-container-wide td, th {
     border: 1px solid #dddddd;
     text-align: left;
