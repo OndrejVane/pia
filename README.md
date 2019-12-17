@@ -1,5 +1,11 @@
-# How run application in docker
+# Run application
+## With script
+```
+chmod +x run.sh
+./run.sh
+```
 
+## With single commands
 1) go to application root folder(where is pom.xml file)
 
 2) build application by maven
