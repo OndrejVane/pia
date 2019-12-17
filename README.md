@@ -1,6 +1,9 @@
 # Run application
 Tools: Docker, Maven
 ## With script
+1) go to application root folder(where is pom.xml file)
+
+2) run this commands in terminal
 ```
 chmod +x run.sh
 ./run.sh
