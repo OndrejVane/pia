@@ -1,6 +1,15 @@
 # How run application in docker
 
+1) go to application root folder(where is pom.xml file)
 
+2) build application by maven 
+mvn clean install
+
+3) create docker image
+docker build -t <imagename> .
+
+4) run docker image on port 8080
+docker run -p8080:8080 <imagename>
 # Default users in application
 
 1) username: qwer1111 pw: 1234 role: ADMIN 
