@@ -27,9 +27,9 @@ docker run -p8080:8080 <imagename>
 ```
 # Default users in application
 
-1) username: qwer1111 pw: 1234 role: ADMIN 
-2) username: qwer2222 pw: 1234 role: --
-3) username: qwer3333 pw: 1234 role: ACCOUNTANT
+1) username: Admin001 pw: 1234 role: ADMIN 
+2) username: User0001 pw: 1234 role: --
+3) username: Accou001 pw: 1234 role: ACCOUNTANT
 
 
 # New user creating

@@ -25,20 +25,20 @@ class UserRepositoryTest {
 
         // admin tests
         log.info("Looking for admin.");
-        User admin = userRepo.findByUsername("qwer1111");
+        User admin = userRepo.findByUsername("Admin001");
         Assertions.assertNotNull(admin);
         log.info("Found admin.");
         Assertions.assertEquals(1, admin.getRoles().size());
         log.info("Admin has one role, removing.");
         admin.getRoles().remove(0);
         userRepo.save(admin);
-        admin = userRepo.findByUsername("qwer1111");
+        admin = userRepo.findByUsername("Admin001");
         Assertions.assertEquals(0, admin.getRoles().size());
         log.info("Admin has no role now, OK.");
 
         // accountant tests
         log.info("Looking for accountant.");
-        User user = userRepo.findByUsername("qwer2222");
+        User user = userRepo.findByUsername("User0001");
         Assertions.assertNotNull(user);
         log.info("Found test.");
         Assertions.assertEquals(0, user.getRoles().size());
@@ -46,14 +46,14 @@ class UserRepositoryTest {
 
         // accountant tests
         log.info("Looking for accountant.");
-        User accountant = userRepo.findByUsername("qwer3333");
+        User accountant = userRepo.findByUsername("Accou001");
         Assertions.assertNotNull(accountant);
         log.info("Found test.");
         Assertions.assertEquals(1, accountant.getRoles().size());
         log.info("Accountant has one role, removing.");
         accountant.getRoles().remove(0);
         userRepo.save(accountant);
-        accountant = userRepo.findByUsername("qwer3333");
+        accountant = userRepo.findByUsername("Accou001");
         Assertions.assertEquals(0, accountant.getRoles().size());
         log.info("accountant has no role now, OK.");
     }
@@ -63,7 +63,7 @@ class UserRepositoryTest {
     @Order(2)
     void testUpdateUser() {
         log.info("Testing user update method");
-        User user = userRepo.findByUsername("qwer1111");
+        User user = userRepo.findByUsername("Admin001");
         Assertions.assertNotNull(user);
         log.info("User found. Change some first name and last name");
 
@@ -73,7 +73,7 @@ class UserRepositoryTest {
         userRepo.save(user);
         log.info("User saved with new first name and last name");
 
-        User updatedUser = userRepo.findByUsername("qwer1111");
+        User updatedUser = userRepo.findByUsername("Admin001");
 
         Assertions.assertNotNull(user);
         Assertions.assertEquals("John", updatedUser.getFirstName());

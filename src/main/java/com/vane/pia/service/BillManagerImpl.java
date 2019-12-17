@@ -200,7 +200,7 @@ public class BillManagerImpl implements BillManager {
 
             log.info("Creating Bill 1 and Bill 2 for contact 1");
             Contact contact1 = contactRepository.findByName("Alza.cz a.s.");
-            User user1 = userRepository.findByUsername("qwer3333");
+            User user1 = userRepository.findByUsername("Accou001");
             Bill newBill = new Bill("Bill 1",
                     "Nákup a montáž počítaču",
                     true,
@@ -227,7 +227,7 @@ public class BillManagerImpl implements BillManager {
 
             log.info("Creating Bill 3 and Bill 4 for contact 2");
             Contact contact2 = contactRepository.findByName("CZC.cz s.r.o.");
-            User user2 = userRepository.findByUsername("qwer2222");
+            User user2 = userRepository.findByUsername("User0001");
             Bill bill3 = new Bill("Bill 3",
                     "Nákup zásuvek",
                     true,
@@ -255,7 +255,7 @@ public class BillManagerImpl implements BillManager {
 
             log.info("Creating Bill 5 and Bill 6 for contact 2");
             Contact contact3 = contactRepository.findByName("ELFETEX, spol. s r.o.");
-            User user3 = userRepository.findByUsername("qwer1111");
+            User user3 = userRepository.findByUsername("Admin001");
             Bill bill5 = new Bill("Bill 5",
                     "Nákup zásuvek",
                     true,

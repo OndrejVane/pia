@@ -37,13 +37,13 @@ public class UserManagerImpl implements UserManager, UserDetailsService {
     private static final String DEFAULT_PASSWORD = "1234";
 
     // admin user
-    private static final String ADMIN_USER_NAME = "qwer1111";
+    private static final String ADMIN_USER_NAME = "Admin001";
 
     // normal user
-    private static final String USER_NAME = "qwer2222";
+    private static final String USER_NAME = "User0001";
 
     // normal accountant
-    private static final String ACCOUNTANT_NAME = "qwer3333";
+    private static final String ACCOUNTANT_NAME = "Accou001";
 
     @Autowired
     private PasswordEncoder encoder;
