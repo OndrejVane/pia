@@ -35,6 +35,10 @@
         float: none;
         width: 100%;
     }
+
+    .topNav {
+        position: static;
+    }
 }
 
 .active {

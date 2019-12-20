@@ -15,7 +15,7 @@ section.login-container{
 }
 
 #content-wrap{
-    margin-top: 50px;
+    margin-top: 15px;
 }
 
 label{
@@ -24,6 +24,5 @@ label{
 
 @media screen and (max-width: 600px) {
     #content-wrap {
-        margin-top: 380px;
     }
 }
